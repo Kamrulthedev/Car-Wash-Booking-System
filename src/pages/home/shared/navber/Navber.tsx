@@ -33,7 +33,7 @@ const Navber = () => {
   }, [dropdownRef]);
 
   return (
-    <nav className="bg-black py-4 px-6 flex items-center justify-between mb-6 z-10 relative font-serif">
+    <nav className="bg-black w-full py-4 px-6 flex items-center justify-between top-0 left-0 z-40 fixed font-serif">
       {/* Logo Section */}
       <a href="#">
         <div className="flex items-center space-x-4">
