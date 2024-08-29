@@ -18,8 +18,8 @@ const Address = () => {
                 <FaMapMarkerAlt className="text-blue-500 text-3xl" />
                 <div>
                     <h3 className="text-lg font-semibold">OUR ADDRESS</h3>
-                    <p className="text-gray-600">464 Rhode Island Av.</p>
-                    <p className="text-gray-600">Portland, OR 97219</p>
+                    <p className="text-gray-600">464 Cox`s Bazar Sadur,</p>
+                    <p className="text-gray-600">Chittagong, OR 97219</p>
                 </div>
             </div>
 
