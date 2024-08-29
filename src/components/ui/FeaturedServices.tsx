@@ -87,17 +87,17 @@ const FeaturedServices = () => {
 
   return (
     <section
-      className="relative min-h-screen bg-cover bg-center flex flex-col justify-center items-center py-16"
+      className="relative min-h-screen w-full bg-cover bg-center flex flex-col justify-center items-center py-16"
       style={{
         backgroundImage:
           "url('https://i.ibb.co/Z6z7zH2/man-cleaning-red-sports-car-with-power-washer-rainy-afternoon-garage-area-1090747-488.jpg')",
       }}
     >
-      <div className="absolute inset-0 bg-black opacity-80"></div>{" "}
+      <div className="absolute inset-0 bg-black opacity-80"></div>
       <div className="relative z-10">
         {/* category section */}
         <div className="justify-center mb-8 space-x-4">
-          <div className="flex justify-center mb-4">
+          <div className="flex justify-center mb-4 gap-2">
             {categories.map((category) => (
               <button
                 key={category}
@@ -113,7 +113,7 @@ const FeaturedServices = () => {
             ))}
           </div>
 
-          <div className="flex justify-center">
+          <div className="flex justify-center gap-2">
             {vehicleTypes.map((type) => (
               <button
                 key={type}
@@ -130,7 +130,7 @@ const FeaturedServices = () => {
           </div>
         </div>
         {/* Service Cards */}
-        <div className="w-full max-w-6xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 p-4">
+        <div className="w-full mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 p-4">
           {filteredServices.map((service, index) => (
             <ServiceCard
               key={index}
