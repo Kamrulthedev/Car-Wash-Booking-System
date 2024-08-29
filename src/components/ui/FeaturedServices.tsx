@@ -87,7 +87,7 @@ const FeaturedServices = () => {
 
   return (
     <section
-      className="relative min-h-screen w-full bg-cover bg-center flex flex-col justify-center items-center py-16"
+      className="relative min-h-screen w-full bg-cover bg-center flex flex-col justify-center items-center lg:py-16"
       style={{
         backgroundImage:
           "url('https://i.ibb.co/Z6z7zH2/man-cleaning-red-sports-car-with-power-washer-rainy-afternoon-garage-area-1090747-488.jpg')",
@@ -130,7 +130,7 @@ const FeaturedServices = () => {
           </div>
         </div>
         {/* Service Cards */}
-        <div className="w-full mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 p-4">
+        <div className="lg:w-full md:w-[700px] grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 p-4">
           {filteredServices.map((service, index) => (
             <ServiceCard
               key={index}
