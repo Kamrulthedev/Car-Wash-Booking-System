@@ -35,7 +35,7 @@ const Navber = () => {
   return (
     <nav className="bg-black w-full py-4 px-6 flex items-center justify-between top-0 left-0 z-40 fixed font-serif">
       {/* Logo Section */}
-      <a href="#">
+      <a href="">
         <div className="flex items-center space-x-4">
           <img
             src="https://i.ibb.co/BZcWcgV/npad-logo-white.png"

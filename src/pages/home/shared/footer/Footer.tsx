@@ -75,7 +75,7 @@ const Footer = () => {
                 </div>
 
                 <p className="text-sm text-gray-500 mt-4 md:mt-0">
-                    By QuanticaLabs © {year} Auto Spa - Car Wash Auto Detail WordPress Theme
+                    By QuanticaLabs © {year} Auto Spa - Car Wash And Booking Center
                 </p>
             </div>
         </footer>

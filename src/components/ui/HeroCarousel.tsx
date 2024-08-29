@@ -14,7 +14,7 @@ const contentStyle: React.CSSProperties = {
   position: "relative",
 };
 
-// Hero Carousel component
+
 const HeroCarousel = () => {
   const navigate = useNavigate();
 
@@ -24,14 +24,14 @@ const HeroCarousel = () => {
         {/* Slide 1 */}
         <div>
           <div
-            className="h-[50vh] sm:h-[70vh] md:h-[80vh] lg:h-[100vh]" // Responsive height classes
+            className="h-[50vh] sm:h-[70vh] md:h-[80vh] lg:h-[100vh]" 
             style={{
               ...contentStyle,
               backgroundImage:
                 "url('https://i.ibb.co/Z6z7zH2/man-cleaning-red-sports-car-with-power-washer-rainy-afternoon-garage-area-1090747-488.jpg')",
             }}
           >
-            <div className="absolute inset-0 bg-black opacity-50"></div> {/* Overlay for dark effect */}
+            <div className="absolute inset-0 bg-black opacity-50"></div> 
             <div className="relative text-center z-10 px-4 sm:px-6 py-12 sm:py-16 md:py-20 lg:py-24">
               <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-serif mb-4 sm:mb-6">
                 Premium Hand Car Wash
@@ -52,14 +52,14 @@ const HeroCarousel = () => {
         {/* Slide 2 */}
         <div>
           <div
-            className="h-[50vh] sm:h-[70vh] md:h-[80vh] lg:h-[100vh]" // Responsive height classes
+            className="h-[50vh] sm:h-[70vh] md:h-[80vh] lg:h-[100vh]" 
             style={{
               ...contentStyle,
               backgroundImage:
                 "url('https://i.ibb.co/Z8cbvyd/man-with-beard-washes-gray-car-with-highpressure-apparatus-night-car-wash-1027059-15207.jpg')",
             }}
           >
-            <div className="absolute inset-0 bg-black opacity-50"></div> {/* Overlay */}
+            <div className="absolute inset-0 bg-black opacity-50"></div>
             <div className="relative text-center z-10 px-4 sm:px-6 py-12 sm:py-16 md:py-20 lg:py-24">
               <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-serif mb-4 sm:mb-6">
                 Quality Detailing Services
@@ -80,14 +80,14 @@ const HeroCarousel = () => {
         {/* Slide 3 */}
         <div>
           <div
-            className="h-[50vh] sm:h-[70vh] md:h-[80vh] lg:h-[100vh]" // Responsive height classes
+            className="h-[50vh] sm:h-[70vh] md:h-[80vh] lg:h-[100vh]" 
             style={{
               ...contentStyle,
               backgroundImage:
                 "url('https://i.ibb.co/mDjJcJ8/man-polishing-car-inside-car-service-1303-26881.jpg')",
             }}
           >
-            <div className="absolute inset-0 bg-black opacity-50"></div> {/* Overlay */}
+            <div className="absolute inset-0 bg-black opacity-50"></div>
             <div className="relative text-center z-10 px-4 sm:px-6 py-12 sm:py-16 md:py-20 lg:py-24">
               <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-serif mb-4 sm:mb-6">
                 Quality Detailing Services
@@ -108,14 +108,14 @@ const HeroCarousel = () => {
         {/* Slide 4 */}
         <div>
           <div
-            className="h-[50vh] sm:h-[70vh] md:h-[80vh] lg:h-[100vh]" // Responsive height classes
+            className="h-[50vh] sm:h-[70vh] md:h-[80vh] lg:h-[100vh]"
             style={{
               ...contentStyle,
               backgroundImage:
                 "url('https://i.ibb.co/6FxgfHh/car-wash-expert-using-water-pressure-washer-clean-red-modern-sportscar-generated-by-ai-1020649-507.jpg')",
             }}
           >
-            <div className="absolute inset-0 bg-black opacity-50"></div> {/* Overlay */}
+            <div className="absolute inset-0 bg-black opacity-50"></div>
             <div className="relative text-center z-10 px-4 sm:px-6 py-12 sm:py-16 md:py-20 lg:py-24">
               <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-serif mb-4 sm:mb-6">
                 Quality Detailing Services
@@ -132,8 +132,7 @@ const HeroCarousel = () => {
             </div>
           </div>
         </div>
-
-        {/* Additional slides can be added similarly */}
+        {/* Add more */}
       </Carousel>
     </section>
   );
