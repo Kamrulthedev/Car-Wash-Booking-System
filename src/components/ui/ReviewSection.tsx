@@ -41,15 +41,7 @@ const ReviewSection = () => {
     reviews.reduce((acc, review) => acc + review.rating, 0) / reviews.length;
 
   return (
-    <div
-    className="relative bg-cover bg-center bg-no-repeat"
-    style={{
-      backgroundImage:
-        "url('https://i.ibb.co/Z6z7zH2/man-cleaning-red-sports-car-with-power-washer-rainy-afternoon-garage-area-1090747-488.jpg')",
-    }}
-  >
-    {/* Black Overlay */}
-    <div className="absolute inset-0 bg-black opacity-70 z-0"></div> 
+<div>
   
     <section className="relative bg-white bg-opacity-90 rounded-lg p-6 max-w-3xl mx-auto shadow-md z-10">
       {/* Black Overlay with Login Button */}

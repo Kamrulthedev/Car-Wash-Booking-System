@@ -10,7 +10,7 @@ const StarRating = ({ rating, setRating } : StarRatingProps) => {
         <svg
           key={index}
           className={`w-8 h-8 cursor-pointer ${
-            index < rating ? "text-yellow-400" : "text-white"
+            index < rating ? "text-yellow-400" : "text-gray-300"
           }`}
           fill="currentColor"
           viewBox="0 0 24 24"

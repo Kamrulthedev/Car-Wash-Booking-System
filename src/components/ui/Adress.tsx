@@ -2,7 +2,7 @@ import { FaPhone, FaMapMarkerAlt, FaClock } from 'react-icons/fa';
 
 const Address = () => {
     return (
-        <div className="flex justify-around items-start p-10 bg-white shadow-md">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 p-12 lg:h-64 items-center gap-10 lg:gap-0 bg-white shadow-md">
             {/* Call Us Section */}
             <div className="flex items-center space-x-4">
                 <FaPhone className="text-blue-500 text-3xl" />
