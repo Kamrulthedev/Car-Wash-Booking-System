@@ -15,7 +15,7 @@ const Login = () => {
   };
 
   return (
-    <div className="relative flex items-center justify-center min-h-screen">
+    <div className="relative flex items-center justify-center min-h-screen lg:mt-[18px]">
       {/* Background Image */}
       <div
         className="absolute inset-0"
