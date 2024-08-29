@@ -75,7 +75,7 @@ const Navber = () => {
           <TbPhoneCall className="text-green-500 text-lg" />
           <span className="text-white">Call</span>
         </Link>
-        <Link to={"/"} className="flex items-center space-x-2 text-white hover:border hover:border-green-500 p-1 rounded-lg">
+        <Link to={"/login"} className="flex items-center space-x-2 text-white hover:border hover:border-green-500 p-1 rounded-lg">
           <IoMdLogIn className="text-2xl text-green-500 hover:transition-transform hover:scale-x-110" />
           <span>Login</span>
         </Link>
