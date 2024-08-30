@@ -16,7 +16,7 @@ const Register = () => {
   };
 
   return (
-    <div className="relative flex items-center justify-center min-h-screen lg:mt-[62px] p-6">
+    <div className="relative flex items-center justify-center min-h-screen mt-16 lg:mt-[62px] p-6">
       {/* Background Image with Opacity */}
       <div
         className="absolute inset-0"
@@ -126,7 +126,7 @@ const Register = () => {
             <p className="text-sm text-gray-600">
               Already have an account?{" "}
               <Link to="/login" className="text-blue-500 hover:text-blue-700">
-                Login here
+              Sign in here
               </Link>
             </p>
           </div>

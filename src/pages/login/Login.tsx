@@ -33,7 +33,7 @@ const Login = () => {
       />
       {/* Login Form */}
       <div className="bg-white p-8 rounded-lg shadow-lg max-w-sm w-full">
-        <h2 className="text-2xl font-bold mb-6 text-center">Login</h2>
+        <h2 className="text-2xl font-bold mb-6 text-center">Sign in</h2>
         {error && <p className="text-red-500 mb-4">{error}</p>}
         <form onSubmit={handleLogin}>
           <div>
@@ -83,7 +83,7 @@ const Login = () => {
                 to="/register"
                 className="text-blue-500 ml-2 hover:text-blue-700"
               >
-                Register here
+                Sign Up here
               </Link>
             </p>
           </div>
