@@ -41,12 +41,12 @@ const Navber = () => {
       {/* Navigation Links for Larger Screens */}
       <ul className={`hidden lg:flex space-x-8 text-white`}>
         <li>
-          <a href="#" className="hover:text-gray-400 block py-2">
+          <a href="/" className="hover:text-gray-400 block py-2">
             HOME
           </a>
         </li>
         <li>
-          <a href="#" className="hover:text-gray-400 block py-2">
+          <a href="/services" className="hover:text-gray-400 block py-2">
             SERVICES
           </a>
         </li>
