@@ -4,34 +4,27 @@ import { TbPhoneCall } from "react-icons/tb";
 import { Link } from "react-router-dom";
 
 const Navber = () => {
-  // State to manage the toggle
   const [isOpen, setIsOpen] = useState(false);
-
-  // Reference to the dropdown menu
-  const dropdownRef = useRef(null);
-
+  const dropdownRef = useRef<HTMLDivElement>(null);
  
   const toggleMenu = () => {
     setIsOpen(!isOpen);
   };
 
-  // Close the dropdown if clicked outside of it
+
   useEffect(() => {
-    const handleClickOutside = (event: any) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
         setIsOpen(false);
       }
     };
 
-    // Attach event listener
     document.addEventListener("mousedown", handleClickOutside);
 
-    // Clean up the event listener
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, [dropdownRef]);
-
   return (
     <nav className="bg-black w-full py-4 px-6 flex items-center justify-between top-0 left-0 z-40 fixed font-serif">
       {/* Logo Section */}
