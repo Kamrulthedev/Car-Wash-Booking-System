@@ -8,7 +8,7 @@ import { Link, Outlet } from "react-router-dom";
 
 const Dashboard = () => {
   return (
-    <div>
+    <div className="mt-[62px]">
     <Layout style={{ minHeight: "100vh" }}>
       <Sider
         style={{
@@ -17,7 +17,7 @@ const Dashboard = () => {
           left: 0,
           top: 0,
           zIndex: 1,
-          backgroundColor: "rgb(15 23 42)",
+          backgroundColor: "rgb(0, 0, 0)",
         }}
         breakpoint="lg"
         collapsedWidth="0"
@@ -39,8 +39,8 @@ const Dashboard = () => {
         <Menu
           theme="dark"
           mode="inline"
-          style={{ backgroundColor: "rgb(15 23 42)" }}
-          defaultSelectedKeys={["1"]}
+          style={{ backgroundColor: "rgb(0, 0, 0)",
+          }}
         >
           <Menu.Item key="1" icon={<GrUnorderedList />}>
             <Link to="/admin/bookings">Recent Bookings</Link>
@@ -56,10 +56,9 @@ const Dashboard = () => {
           </Menu.Item>
         </Menu>
       </Sider>
-      <Layout style={{ marginLeft: 200 }}> {/* Adjust marginLeft to account for fixed Sider */}
+      <Layout>
         <Content style={{ margin: "24px 16px 0", padding: 12 }}>
           <Outlet />
-          {/* Content should now appear directly under the header */}
         </Content>
       </Layout>
     </Layout>

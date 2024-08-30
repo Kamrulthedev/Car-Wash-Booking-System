@@ -12,6 +12,7 @@
   "dependencies": {
     "@react-google-maps/api": "^2.19.3",
     "antd": "^5.20.3",
+    "axios": "^1.7.5",
     "localforage": "^1.10.0",
     "match-sorter": "^6.3.4",
     "prop-types": "^15.8.1",
