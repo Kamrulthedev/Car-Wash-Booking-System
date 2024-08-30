@@ -1,7 +1,7 @@
-import React, { useState } from "react";
+import { useState } from "react";
+import { Link } from "react-router-dom";
 
 const Services = () => {
-  // State management
   const [searchQuery, setSearchQuery] = useState("");
   const [filterCriteria, setFilterCriteria] = useState("all");
   const [sortOrder, setSortOrder] = useState("asc");
@@ -17,11 +17,9 @@ const Services = () => {
     { id: 7, name: "Headlight Restoration", description: "Polishing of headlights for improved clarity and brightness.", price: "25", duration: "35" },
     { id: 8, name: "Clay Bar Treatment", description: "Removes contaminants and smooths the paint surface.", price: "50", duration: "75" },
     { id: 9, name: "Seat Shampoo", description: "Deep cleaning of cloth or leather seats.", price: "40", duration: "60" },
-    { id: 10, name: "Undercarriage Wash", description: "Clean the underside of the vehicle to remove dirt and grime.", price: "20", duration: "30" },
-    { id: 11, name: "Ceramic Coating", description: "Apply a ceramic coat for long-lasting protection and shine.", price: "100", duration: "120" },
-    { id: 12, name: "Glass Treatment", description: "Water-repellent treatment for windows and mirrors.", price: "15", duration: "20" },
-    { id: 13, name: "Odor Removal", description: "Eliminates odors from the interior using ozone or chemical treatments.", price: "35", duration: "45" },
+    { id: 10, name: "Undercarriage Wash", description: "Clean the underside of the vehicle to remove dirt and grime.", price: "20", duration: "30" }
   ];
+
   // Filter the services based on search query, filter criteria, and sort order
   const filteredServices = servicesList
     .filter(service =>
@@ -63,7 +61,6 @@ const Services = () => {
         
         {/* Search and Filter Controls */}
         <div className="mb-4 flex flex-col lg:flex-row justify-between lg:gap-5 items-center">
-          {/* Search input */}
           <input
             type="text"
             placeholder="Search services..."
@@ -109,7 +106,7 @@ const Services = () => {
                 </p>
               </div>
               <button className="mt-2 lg:mt-0 border-2 border-green-500 p-2 rounded-lg hover:bg-green-500 hover:text-white transition duration-300">
-                View Details
+                <Link to={`/services/${service.id}`}>View Details</Link>
               </button>
             </div>
           ))}
