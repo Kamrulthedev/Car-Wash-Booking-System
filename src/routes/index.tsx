@@ -7,6 +7,11 @@ import Services from "../pages/services/Services";
 import ServiceDetails from "../pages/serviceDetails/ServiceDetails";
 import Booking from "../pages/booking/Booking";
 import NotFoundPage from "../pages/error/NotFoundPage";
+import Admin from "../pages/admin/admin/Admin";
+import AllBookings from "../pages/admin/allBookings/AllBookings";
+import ServiceManagement from "../pages/admin/serviceManagement/ServiceManagement";
+import SlotManagement from "../pages/admin/slotManagement/SlotManagement";
+import UserManagement from "../pages/admin/userManagement/UserManagement";
 
 const router = createBrowserRouter([
   {
@@ -41,6 +46,28 @@ const router = createBrowserRouter([
         path: "*",
         element: <NotFoundPage />,
       },
+      {
+        path:'/admin',
+        element:<Admin></Admin>,
+        children:[
+          {
+            path:'bookings',
+            element:<AllBookings></AllBookings>
+          },
+          {
+            path:'servicesManagement',
+            element:<ServiceManagement></ServiceManagement>
+          },
+          {
+            path:'slotsManagement',
+            element:<SlotManagement></SlotManagement>
+          },
+          {
+            path:'usersManagement',
+            element:<UserManagement></UserManagement>
+          },
+        ]
+      }
     ],
   },
 ]);

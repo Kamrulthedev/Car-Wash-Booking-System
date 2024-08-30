@@ -6,8 +6,9 @@ import { Link } from "react-router-dom";
 const navLinks = [
   { name: "HOME", path: "/" },
   { name: "SERVICES", path: "/services" },
-  { name: "LOCATION", path: "/location" }, 
+  { name: "LOCATION", path: "/location" },
   { name: "BOOKING", path: "/booking" },
+  { name: "ADMIN DASHBOARD", path: "/admin" },
 ];
 
 const Navber = () => {
