@@ -5,6 +5,8 @@ import Login from "../pages/login/Login";
 import Register from "../pages/register/Register";
 import Services from "../pages/services/Services";
 import ServiceDetails from "../pages/serviceDetails/ServiceDetails";
+import Booking from "../pages/booking/Booking";
+import NotFoundPage from "../pages/error/NotFoundPage";
 
 const router = createBrowserRouter([
   {
@@ -21,7 +23,11 @@ const router = createBrowserRouter([
       },
       {
         path: "/services/:id",
-        element:<ServiceDetails></ServiceDetails>
+        element: <ServiceDetails></ServiceDetails>,
+      },
+      {
+        path: "/booking",
+        element: <Booking></Booking>,
       },
       {
         path: "/login",
@@ -30,6 +36,10 @@ const router = createBrowserRouter([
       {
         path: "/register",
         element: <Register></Register>,
+      },
+      {
+        path: "*",
+        element: <NotFoundPage />,
       },
     ],
   },

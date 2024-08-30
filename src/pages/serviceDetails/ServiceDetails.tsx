@@ -16,7 +16,7 @@ const servicesList = [
   ];
 
 
-  const availableSlots = ["9:00 AM", "10:30 AM", "12:00 PM", "1:30 PM", "3:00 PM", "4:30 PM"];
+const availableSlots = ["9:00 AM", "10:30 AM", "12:00 PM", "1:30 PM", "3:00 PM", "4:30 PM"];
 
 type Tservice = {
   id: number;
@@ -49,13 +49,11 @@ const ServiceDetails = () => {
         const fetchedBookedSlots : any = []; // Initially, no slots are booked
         setBookedSlots(fetchedBookedSlots);
       };
-
       fetchBookedSlots();
     }
   }, [selectedDate]);
 
   if (loading) return <p>Loading service details...</p>;
-
   if (!selectedService) {
     return <p>Service not found. Please check the service ID.</p>;
   }
