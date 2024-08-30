@@ -41,7 +41,7 @@ const servicesList = [
 const Services = () => {
   return (
     <div
-    className="min-h-screen flex items-center justify-center bg-cover bg-center p-4 lg:mt-[62px]"
+    className="min-h-screen flex items-center justify-center bg-cover bg-center p-4 mt-[52px] lg:mt-[62px]"
     style={{
       backgroundImage:
         "url('https://i.ibb.co/LpVzFMX/man-washing-car-with-hood-up-763111-289116.jpg')",
