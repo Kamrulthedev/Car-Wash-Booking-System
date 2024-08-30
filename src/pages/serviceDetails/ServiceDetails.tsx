@@ -16,7 +16,7 @@ const servicesList = [
   ];
 
 
-const availableSlots = ["9:00 AM", "10:30 AM", "12:00 PM", "1:30 PM", "3:00 PM", "4:30 PM"];
+  const availableSlots = ["9:00 AM", "10:30 AM", "12:00 PM", "1:30 PM", "3:00 PM", "4:30 PM"];
 
 type Tservice = {
   id: number;
@@ -35,9 +35,6 @@ const ServiceDetails = () => {
   const [selectedSlot, setSelectedSlot] = useState<string | null>(null);
   const [bookedSlots, setBookedSlots] = useState<string[]>([]);
 
-
-  console.log(setBookedSlots)
-
   useEffect(() => {
     const service = servicesList.find((service) => service.id === numericId);
     setSelectedService(service);
@@ -45,7 +42,16 @@ const ServiceDetails = () => {
   }, [numericId]);
 
   useEffect(() => {
-    // Fetch booked slots based on selectedDate
+    if (selectedDate) {
+      // Simulate an API call to fetch booked slots for the selected date
+      const fetchBookedSlots = async () => {
+        // Simulate a fetch based on the selected date
+        const fetchedBookedSlots : any = []; // Initially, no slots are booked
+        setBookedSlots(fetchedBookedSlots);
+      };
+
+      fetchBookedSlots();
+    }
   }, [selectedDate]);
 
   if (loading) return <p>Loading service details...</p>;
@@ -67,6 +73,10 @@ const ServiceDetails = () => {
         text: `Your service has been booked for ${selectedDate} at ${selectedSlot}.`,
         icon: 'success',
         confirmButtonText: 'OK'
+      }).then(() => {
+        // After confirmation, add the booked slot to the list of booked slots
+        setBookedSlots((prev) => [...prev, selectedSlot]);
+        setSelectedSlot(null); // Clear the selected slot after booking
       });
     } else {
       Swal.fire({
@@ -77,63 +87,63 @@ const ServiceDetails = () => {
       });
     }
   };
-  
 
   return (
-<div className="relative mt-[62px] p-4 min-h-screen">
-  <div className="absolute inset-0 bg-[url('https://i.ibb.co/XYjFF9n/foamy-car-wash-soap-sparkling-clean-vehicle-concept-car-care-cleaning-products-vehicle-maintenance-c.jpg')] bg-cover bg-center opacity-70"></div>
-  <div className="relative max-w-2xl mx-auto bg-white p-8 rounded-lg shadow-lg">
-    <h1 className="text-3xl font-bold mb-4 text-center md:text-left">
-      {selectedService.name}
-    </h1>
-    <p className="mb-2">{selectedService.description}</p>
-    <p className="mb-2">
-      <strong>Price:</strong> {selectedService.price} &nbsp;|&nbsp;
-      <strong>Duration:</strong> {selectedService.duration}
-    </p>
+    <div className="relative mt-[62px] p-4 min-h-screen">
+      <div className="absolute inset-0 bg-[url('https://i.ibb.co/XYjFF9n/foamy-car-wash-soap-sparkling-clean-vehicle-concept-car-care-cleaning-products-vehicle-maintenance-c.jpg')] bg-cover bg-center opacity-70"></div>
+      <div className="relative max-w-2xl mx-auto bg-white p-8 rounded-lg shadow-lg">
+        <h1 className="text-3xl font-bold mb-4 text-center md:text-left">
+          {selectedService.name}
+        </h1>
+        <p className="mb-2">{selectedService.description}</p>
+        <p className="mb-2">
+          <strong>Price: $ </strong> {selectedService.price} &nbsp;|&nbsp;
+          <strong>Duration:</strong> {selectedService.duration} mins
+        </p>
 
-    {/* Date Selector */}
-    <div className="mt-4 mb-6">
-      <label className="block text-gray-700 mb-2">Select Date:</label>
-      <input
-        type="date"
-        value={selectedDate}
-        onChange={(e) => setSelectedDate(e.target.value)}
-        className="border p-2 rounded w-full"
-      />
-    </div>
+        {/* Date Selector */}
+        <div className="mt-4 mb-6">
+          <label className="block text-gray-700 mb-2">Select Date:</label>
+          <input
+            type="date"
+            value={selectedDate}
+            onChange={(e) => setSelectedDate(e.target.value)}
+            className="border p-2 rounded w-full"
+          />
+        </div>
 
-    {/* Time Slots */}
-    <div className="mb-6">
-      <h3 className="text-xl font-semibold mb-2">Available Time Slots</h3>
-      <div className="grid grid-cols-2 gap-4">
-        {availableSlots.map((slot) => (
+        {/* Time Slots */}
+        <div className="mb-6">
+          <h3 className="text-xl font-semibold mb-2">Available Time Slots</h3>
+          <div className="grid grid-cols-2 gap-4">
+            {availableSlots.map((slot) => (
+              <button
+                key={slot}
+                onClick={() => handleSlotSelection(slot)}
+                disabled={bookedSlots.includes(slot)}
+                className={`p-2 rounded border text-center ${
+                  bookedSlots.includes(slot)
+                    ? "bg-gray-200 text-gray-500 cursor-not-allowed"
+                    : "bg-green-500 text-white hover:bg-green-600"
+                } ${selectedSlot === slot && "border-green-700 border-2"}`}
+              >
+                {slot}
+              </button>
+            ))}
+          </div>
+        </div>
+
+        {/* Book Button */}
+        {selectedSlot && (
           <button
-            key={slot}
-            onClick={() => handleSlotSelection(slot)}
-            disabled={bookedSlots.includes(slot)}
-            className={`p-2 rounded border text-center ${
-              bookedSlots.includes(slot) ? "bg-gray-200 text-gray-500 cursor-not-allowed" : "bg-green-500 text-white hover:bg-green-600"
-            } ${selectedSlot === slot && "border-green-700 border-2"}`}
+            onClick={handleBooking}
+            className="mt-4 py-2 px-6 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition duration-300 w-full"
           >
-            {slot}
+            Book This Service
           </button>
-        ))}
+        )}
       </div>
     </div>
-
-    {/* Book Button */}
-    {selectedSlot && (
-      <button
-        onClick={handleBooking}
-        className="mt-4 py-2 px-6 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition duration-300 w-full"
-      >
-        Book This Service
-      </button>
-    )}
-  </div>
-</div>
-
   );
 };
 
