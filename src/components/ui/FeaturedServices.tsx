@@ -101,7 +101,7 @@ const FeaturedServices = () => {
           <button
             key={category}
             onClick={() => setSelectedCategory(category)}
-            className={`px-4 lg:text-base text-xs  py-2 rounded-full border-2 ${
+            className={`lg:px-4 px-2 lg:text-base text-[8px] py-1 lg:py-2 rounded-full border-2 ${
               selectedCategory === category
                 ? "bg-green-500 text-white"
                 : "text-green-500 border-green-500"
@@ -117,7 +117,7 @@ const FeaturedServices = () => {
           <button
             key={type}
             onClick={() => setSelectedVehicleType(type)}
-            className={`px-4 lg:text-base text-[8px] py-2 rounded-full border-2 ${
+            className={`lg:px-4 px-2 lg:text-base text-[8px] py-1 lg:py-2 rounded-full border-2 ${
               selectedVehicleType === type
                 ? "bg-green-500 text-white"
                 : "text-green-500 border-green-500"

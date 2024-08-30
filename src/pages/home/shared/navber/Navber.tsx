@@ -43,7 +43,7 @@ const Navber = () => {
           <img
             src="https://i.ibb.co/BZcWcgV/npad-logo-white.png"
             alt="Logo"
-            className="h-10"
+            className="lg:h-10 h-5"
           />
         </div>
       </Link>
