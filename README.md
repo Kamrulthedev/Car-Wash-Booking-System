@@ -79,3 +79,47 @@ cd car-wash-booking-system
 ```
 
 2. 📦 Install Dependencies:
+
+```bash
+npm install
+```
+
+3. 🔧 Configuration:
+
+   1. Create a .env file in the root directory.
+
+   2. Add necessary configuration variables:
+  
+```bash
+  PORT=3000
+DB_URL=your_db_connection_uri
+API_KEY=your_api_key_here
+```
+
+4. 🚀 Start the Development Server:
+
+```bash   
+  npm start
+```
+## Usage
+
+### 🏠 Home Page: Navigate through the site, explore services, and access the booking system.
+
+### 🔐 User Authentication: Register and log in to access personalized features.
+
+### 👨‍💼 Admin Dashboard: Manage services, slots, and users.
+
+### 📅 Booking: Select services and time slots, complete the booking and payment process.
+
+## GitHub Contributions
+
+1. Ensure a well-documented GitHub repository with a minimum of 15 commits.
+2. Each commit should represent meaningful progress, such as feature implementation, bug fixes, or UI enhancements.
+ 
+ ## Deliverables
+1. Fully functional frontend application integrated with the backend.
+2. Responsive design for all pages.
+3. User and Admin dashboards with described features.
+4. Complete backend integration.
+5. Clean, well-organized, and documented code.
+6. Creative solutions to integration challenges.
