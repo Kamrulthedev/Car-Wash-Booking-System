@@ -102,17 +102,12 @@ API_KEY=your_api_key_here
   npm start
 ```
 ## Usage
-
-### 🏠 Home Page: Navigate through the site, explore services, and access the booking system.
-
-### 🔐 User Authentication: Register and log in to access personalized features.
-
-### 👨‍💼 Admin Dashboard: Manage services, slots, and users.
-
-### 📅 Booking: Select services and time slots, complete the booking and payment process.
+1. 🏠 Home Page: Navigate through the site, explore services, and access the booking system.
+2. 🔐 User Authentication: Register and log in to access personalized features.
+3. 👨‍💼 Admin Dashboard: Manage services, slots, and users.
+4. 📅 Booking: Select services and time slots, complete the booking and payment process.
 
 ## GitHub Contributions
-
 1. Ensure a well-documented GitHub repository with a minimum of 15 commits.
 2. Each commit should represent meaningful progress, such as feature implementation, bug fixes, or UI enhancements.
  
