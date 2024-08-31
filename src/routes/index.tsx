@@ -13,6 +13,10 @@ import ServiceManagement from "../pages/admin/serviceManagement/ServiceManagemen
 import SlotManagement from "../pages/admin/slotManagement/SlotManagement";
 import UserManagement from "../pages/admin/userManagement/UserManagement";
 import User from "../pages/user/user/User";
+import PastBooking from "../pages/user/pastBooking/PastBooking";
+import UpcomingBooking from "../pages/user/upcomingBooking/UpcomingBooking";
+import AccountInfo from "../pages/user/accountInfo/AccountInfo";
+import SlotCountdown from "../pages/user/slotCountdown/SlotCountdown";
 
 const router = createBrowserRouter([
   {
@@ -74,8 +78,21 @@ const router = createBrowserRouter([
         element:<User></User>,
         children:[
           {
-            
-          }
+            path:'past-bookings',
+            element:<PastBooking></PastBooking>
+          },
+          {
+            path:'upcoming-bookings',
+            element:<UpcomingBooking></UpcomingBooking>
+          },
+          {
+            path:'account-info',
+            element:<AccountInfo></AccountInfo>
+          },
+          {
+            path:'service-slot-countdown',
+            element:<SlotCountdown></SlotCountdown>
+          },
         ]
       }
     ],
