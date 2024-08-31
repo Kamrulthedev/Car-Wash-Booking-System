@@ -1,13 +1,12 @@
 import { Layout, Menu } from "antd";
 import { Content } from "antd/es/layout/layout";
 import Sider from "antd/es/layout/Sider";
-import { BsFillCalendarFill } from "react-icons/bs";
-import { GrUnorderedList } from "react-icons/gr";
-import { MdCreateNewFolder, MdManageAccounts } from "react-icons/md";
+import { BsFillCalendarFill, BsClockHistory } from "react-icons/bs";
+import { MdPersonOutline } from "react-icons/md";
+import { FaHistory } from "react-icons/fa";
 import { Link, Outlet } from "react-router-dom";
 
-
-const UserDahboard = () => {
+const UserDashboard = () => {
   return (
     <div className="mt-[62px]">
       <Layout style={{ minHeight: "100vh" }}>
@@ -42,17 +41,17 @@ const UserDahboard = () => {
             mode="inline"
             style={{ backgroundColor: "rgb(0, 0, 0)" }}
           >
-            <Menu.Item key="1" icon={<GrUnorderedList />}>
-              <Link to="/admin/bookings">Recent Bookings</Link>
+            <Menu.Item key="1" icon={<FaHistory />}>
+              <Link to="/user/past-bookings">Past Bookings</Link>
             </Menu.Item>
-            <Menu.Item key="2" icon={<MdCreateNewFolder />}>
-              <Link to="/admin/servicesManagement">Service Management</Link>
+            <Menu.Item key="2" icon={<BsClockHistory />}>
+              <Link to="/user/upcoming-bookings">Upcoming Bookings</Link>
             </Menu.Item>
-            <Menu.Item key="3" icon={<BsFillCalendarFill />}>
-              <Link to="/admin/slotsManagement">Slot Management</Link>
+            <Menu.Item key="3" icon={<MdPersonOutline />}>
+              <Link to="/user/account-info">Account Information</Link>
             </Menu.Item>
-            <Menu.Item key="4" icon={<MdManageAccounts />}>
-              <Link to="/admin/usersManagement">User Management</Link>
+            <Menu.Item key="4" icon={<BsFillCalendarFill />}>
+              <Link to="/user/service-slot-countdown">Service Slot Countdown</Link>
             </Menu.Item>
           </Menu>
         </Sider>
@@ -66,4 +65,4 @@ const UserDahboard = () => {
   );
 };
 
-export default UserDahboard;
+export default UserDashboard;
