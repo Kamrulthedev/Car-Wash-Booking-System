@@ -1,9 +1,22 @@
 import React, { useState, useEffect } from "react";
 import { Card, List } from "antd";
 import dayjs from "dayjs";
+import duration from "dayjs/plugin/duration"; // Import duration plugin for dayjs
+
+dayjs.extend(duration); // Extend dayjs with the duration plugin
+
+// Define the type for booking data
+type Booking = {
+  key: string;
+  serviceName: string;
+  date: string;
+  startTime: string;
+  endTime: string;
+  price: string;
+};
 
 // Sample data for upcoming bookings
-const demoData = [
+const demoData: Booking[] = [
   {
     key: "1",
     serviceName: "Car Wash",
@@ -22,31 +35,36 @@ const demoData = [
   },
 ];
 
-const calculateTimeRemaining = (date, time) => {
+// Function to calculate time remaining
+const calculateTimeRemaining = (date: string, time: string): string => {
   const now = dayjs();
   const targetTime = dayjs(`${date} ${time}`);
   const diff = targetTime.diff(now);
 
-  const duration = dayjs.duration(diff);
-  return `${duration.days()}d ${duration.hours()}h ${duration.minutes()}m ${duration.seconds()}s`;
+  // Use duration to format the difference
+  const durationObj = dayjs.duration(diff);
+
+  return `${durationObj.days()}d ${durationObj.hours()}h ${durationObj.minutes()}m ${durationObj.seconds()}s`;
 };
 
 const UpcomingBooking = () => {
-  const [bookings, setBookings] = useState([]);
-  const [timeRemaining, setTimeRemaining] = useState({});
+  const [bookings, setBookings] = useState<Booking[]>([]); // Use type annotation for bookings
+  const [timeRemaining, setTimeRemaining] = useState<Record<string, string>>({}); // Record type for timeRemaining
 
   useEffect(() => {
-    setBookings(demoData); // Use demo data for upcoming bookings
+    setBookings(demoData); // Set the bookings with demo data
 
     // Update countdown timers every second
     const intervalId = setInterval(() => {
-      const updatedTimes = {};
+      const updatedTimes: Record<string, string> = {}; // Initialize as Record
+
       demoData.forEach((booking) => {
         updatedTimes[booking.key] = calculateTimeRemaining(
           booking.date,
           booking.startTime
         );
       });
+
       setTimeRemaining(updatedTimes);
     }, 1000);
 

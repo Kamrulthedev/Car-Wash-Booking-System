@@ -1,8 +1,24 @@
-
 import React, { useState, useEffect } from "react";
 import moment from "moment";
 
-const demoBookings = [
+// Define the type for bookings
+type Booking = {
+  id: string;
+  serviceName: string;
+  date: string;
+  startTime: string;
+  endTime: string;
+};
+
+type TimeRemaining = {
+  days: number;
+  hours: number;
+  minutes: number;
+  seconds: number;
+};
+
+// Sample bookings data
+const demoBookings: Booking[] = [
   {
     id: "1",
     serviceName: "Car Wash",
@@ -27,11 +43,11 @@ const demoBookings = [
 ];
 
 const SlotCountdown = () => {
-  const [nextBooking, setNextBooking] = useState(null);
-  const [countdowns, setCountdowns] = useState({});
+  const [nextBooking, setNextBooking] = useState<Booking | null>(null);
+  const [countdowns, setCountdowns] = useState<Record<string, TimeRemaining>>({});
 
   // Helper function to calculate time remaining for a booking
-  const calculateTimeRemaining = (date, startTime) => {
+  const calculateTimeRemaining = (date: string, startTime: string): TimeRemaining => {
     const bookingTime = moment(`${date} ${startTime}`, "YYYY-MM-DD HH:mm");
     const now = moment();
     const duration = moment.duration(bookingTime.diff(now));
@@ -47,8 +63,8 @@ const SlotCountdown = () => {
   // Update countdown timers for all upcoming bookings
   useEffect(() => {
     const intervalId = setInterval(() => {
-      const newCountdowns = {};
-      let nearestBooking = null;
+      const newCountdowns: Record<string, TimeRemaining> = {};
+      let nearestBooking: Booking | null = null;
 
       demoBookings.forEach((booking) => {
         const timeRemaining = calculateTimeRemaining(booking.date, booking.startTime);

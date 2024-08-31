@@ -19,7 +19,7 @@ const AccountInfo = () => {
     setIsEditing(true);
   };
 
-  const handleFormSubmit = (values) => {
+  const handleFormSubmit = (values : any) => {
     console.log("Updated values:", values);
     setIsEditing(false);
   };

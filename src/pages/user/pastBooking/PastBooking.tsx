@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Table } from "antd";
 
 // Sample data for past bookings
-const demoData = [
+const demoData : any = [
   {
     key: "1",
     serviceName: "Car Wash",
