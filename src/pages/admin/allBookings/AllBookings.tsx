@@ -90,7 +90,7 @@ const AllBookings = () => {
     },
   ];
 
-  if (loading) return <Spin size="large" />;
+  if (loading) return <Spin size="large" className="flex justify-center" />;
   if (error) return <Alert message={error} type="error" />;
 
   return <Table  columns={columns} dataSource={bookings} />;
