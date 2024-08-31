@@ -3,17 +3,12 @@ import { IoMdLogIn } from "react-icons/io";
 import { TbPhoneCall } from "react-icons/tb";
 import { Link } from "react-router-dom";
 
-const navLinks = [
-  { name: "HOME", path: "/" },
-  { name: "SERVICES", path: "/services" },
-  { name: "LOCATION", path: "/location" },
-  { name: "BOOKING", path: "/booking" },
-  { name: "ADMIN DASHBOARD", path: "/admin" },
-];
-
 const Navber = () => {
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
+
+  // Mock user data to simulate roles; in a real app, this would come from context or a state manager
+  const [userRole, setUserRole] = useState("User"); 
 
   const toggleMenu = () => {
     setIsOpen(!isOpen);
@@ -35,6 +30,17 @@ const Navber = () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, [dropdownRef]);
+
+  const navLinks = [
+    { name: "HOME", path: "/" },
+    { name: "SERVICES", path: "/services" },
+    { name: "LOCATION", path: "/location" },
+    { name: "BOOKING", path: "/booking" },
+    // Conditionally add "ADMIN DASHBOARD" based on user role
+    ...(userRole === "Admin"
+      ? [{ name: "ADMIN DASHBOARD", path: "/admin" }]
+      : [{ name: "DASHBOARD", path: "/user" }]),
+  ];
 
   return (
     <nav className="bg-black w-full py-4 px-6 flex items-center justify-between top-0 left-0 z-40 fixed font-serif">

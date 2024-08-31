@@ -12,6 +12,7 @@ import AllBookings from "../pages/admin/allBookings/AllBookings";
 import ServiceManagement from "../pages/admin/serviceManagement/ServiceManagement";
 import SlotManagement from "../pages/admin/slotManagement/SlotManagement";
 import UserManagement from "../pages/admin/userManagement/UserManagement";
+import User from "../pages/user/user/User";
 
 const router = createBrowserRouter([
   {
@@ -66,6 +67,15 @@ const router = createBrowserRouter([
             path:'usersManagement',
             element:<UserManagement></UserManagement>
           },
+        ]
+      },
+      {
+        path:'/user',
+        element:<User></User>,
+        children:[
+          {
+            
+          }
         ]
       }
     ],
