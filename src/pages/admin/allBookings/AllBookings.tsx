@@ -4,7 +4,7 @@ import { Table, Typography, Spin, Alert } from "antd";
 const { Title } = Typography;
 
 // Demo data
-const demoBookings = [
+const demoBookings :any = [
   {
     id: "1",
     userName: "John Doe",

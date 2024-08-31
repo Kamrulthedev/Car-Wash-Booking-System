@@ -47,7 +47,7 @@ const SlotManagement = () => {
 
   const handleOk = () => {
     form.validateFields().then((values) => {
-      const selectedService = serviceList.find((service) => service.id === values.service);
+      const selectedService :any = serviceList.find((service) => service.id === values.service);
       const newSlot = {
         key: (slots.length + 1).toString(),
         service: selectedService.id,
@@ -67,7 +67,7 @@ const SlotManagement = () => {
     setIsModalVisible(false);
   };
 
-  const toggleStatus = (key) => {
+  const toggleStatus = (key :any) => {
     setSlots((prevSlots) =>
       prevSlots.map((slot) =>
         slot.key === key && !slot.isBooked
@@ -102,7 +102,7 @@ const SlotManagement = () => {
       title: "Status",
       dataIndex: "status",
       key: "status",
-      render: (text, record) => (
+      render: (text :any, record :any)  => (
         <Select
           value={record.status}
           onChange={() => toggleStatus(record.key)}
@@ -117,7 +117,7 @@ const SlotManagement = () => {
     {
       title: "Action",
       key: "action",
-      render: (_, record) => (
+      render: (_:any, record : any) => (
         <span>
           {!record.isBooked && (
             <Popconfirm
