@@ -19,7 +19,8 @@ Login Overlay: Conditional display for unauthenticated users.
 
 Sign Up Page: User registration with role assignment.
 Login Page: Secure login functionality.
-🛠️ Services Page:
+
+### 🛠️ Services Page:
 
 List of all services with search, filter, and sort options.
 
@@ -27,35 +28,45 @@ List of all services with search, filter, and sort options.
 
 Detailed service information.
 Availability of time slots for booking.
+
 ### 📅 Booking Page:
 
 Display of selected service and time slot.
 User information form and payment processing.
+
 ### 🚫 Error Pages:
 
 Custom 404 page with navigation options.
-👨‍💼 Admin Pages:
+
+### 👨‍💼 Admin Pages:
 
 Admin Dashboard: Overview of bookings, user management, slot management, and service management.
 Service Management: Add, update, and delete services.
 Slot Management: Create, manage, and toggle slot statuses.
 User Management: View and edit user roles.
-👤 User Pages:
+
+### 👤 User Pages:
 
 User Dashboard: Overview of bookings and account information.
 Service Slot Countdown: Countdown timer for upcoming bookings.
-🎁 Bonus Features:
 
-Service Comparison: Compare multiple services side by side.
-Scroll to Top Button: Quick return to the top of the page.
-UI/UX Improvements: Enhanced user interface and experience.
-Technology Stack
-Frontend: React, Ant Design, TypeScript
-Backend: [Specify backend technology if known]
-Database: [Specify database technology if known]
-Payment Processing: AAMARPAY
-Installation Guideline
-Prerequisites
-Node.js and npm installed.
-[Backend server] up and running (if applicable).
-Installation Steps
+### 🎁 Bonus Features:
+
+1. Service Comparison: Compare multiple services side by side.
+2. Scroll to Top Button: Quick return to the top of the page.
+4. UI/UX Improvements: Enhanced user interface and experience.
+
+## Technology Stack
+
+1. Frontend: React, Ant Design, TypeScript
+2. Backend: [Specify backend technology if known]
+3. Database: [Specify database technology if known]
+4. Payment Processing: AAMARPAY
+
+## Installation Guideline
+
+1. Prerequisites
+2. Node.js and npm installed.
+3. [Backend server] up and running (if applicable).
+
+## Installation Steps
