@@ -1,27 +1,36 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { Table, Button, Select, Typography, Popconfirm } from "antd";
 
 const { Title } = Typography;
 const { Option } = Select;
 
+// Define TypeScript interface for user
+interface User {
+  id: string;
+  name: string;
+  email: string;
+  phone: string;
+  role: "User" | "Admin";
+}
+
 // Mock data for users
-const mockUsers = [
+const mockUsers: User[] = [
   { id: "1", name: "John Doe", email: "john.doe@example.com", phone: "123-456-7890", role: "User" },
   { id: "2", name: "Jane Smith", email: "jane.smith@example.com", phone: "234-567-8901", role: "Admin" },
   { id: "3", name: "Alice Johnson", email: "alice.johnson@example.com", phone: "345-678-9012", role: "User" },
 ];
 
-const UserManagement = () => {
-  const [users, setUsers] = useState(mockUsers);
+const UserManagement: React.FC = () => {
+  const [users, setUsers] = useState<User[]>(mockUsers);
 
-  const handleRoleChange = (userId, newRole) => {
+  const handleRoleChange = (userId: string, newRole: "User" | "Admin") => {
     // Update user role in the state
     setUsers((prevUsers) =>
       prevUsers.map((user) => (user.id === userId ? { ...user, role: newRole } : user))
     );
   };
 
-  const toggleUserRole = (userId) => {
+  const toggleUserRole = (userId: string) => {
     setUsers((prevUsers) =>
       prevUsers.map((user) =>
         user.id === userId
@@ -51,11 +60,11 @@ const UserManagement = () => {
       title: "Role",
       dataIndex: "role",
       key: "role",
-      render: (text, record) => (
+      render: (role: "User" | "Admin", record: User) => (
         <Select
-          defaultValue={record.role}
+          value={role}
           style={{ width: 120 }}
-          onChange={(value) => handleRoleChange(record.id, value)}
+          onChange={(value: "User" | "Admin") => handleRoleChange(record.id, value)}
         >
           <Option value="User">User</Option>
           <Option value="Admin">Admin</Option>
@@ -65,7 +74,7 @@ const UserManagement = () => {
     {
       title: "Action",
       key: "action",
-      render: (_, record) => (
+      render: (_: any, record: User) => (
         <Popconfirm
           title={`Are you sure you want to change the role of ${record.name} to ${record.role === "User" ? "Admin" : "User"}?`}
           onConfirm={() => toggleUserRole(record.id)}

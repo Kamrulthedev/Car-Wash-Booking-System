@@ -1,11 +1,21 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { Table, Button, Modal, Form, Input, InputNumber, Popconfirm, Typography } from "antd";
 import { PlusOutlined, EditOutlined, DeleteOutlined } from "@ant-design/icons";
 
 const { Title } = Typography;
 
+// Define a type for service data
+interface Service {
+  key: string;
+  name: string;
+  description: string;
+  price: number;
+  duration: number;
+  isDeleted: boolean;
+}
+
 // Demo data
-const demoServices = [
+const demoServices: Service[] = [
   {
     key: "1",
     name: "Full Car Wash",
@@ -25,13 +35,13 @@ const demoServices = [
 ];
 
 const ServiceManagement = () => {
-  const [services, setServices] = useState(demoServices);
-  const [isModalVisible, setIsModalVisible] = useState(false);
-  const [isEditMode, setIsEditMode] = useState(false);
-  const [currentService, setCurrentService] = useState(null);
+  const [services, setServices] = useState<Service[]>(demoServices);
+  const [isModalVisible, setIsModalVisible] = useState<boolean>(false);
+  const [isEditMode, setIsEditMode] = useState<boolean>(false);
+  const [currentService, setCurrentService] = useState<Service | null>(null);
   const [form] = Form.useForm();
 
-  const showModal = (editMode = false, service = null) => {
+  const showModal = (editMode: boolean = false, service: Service | null = null) => {
     setIsEditMode(editMode);
     setCurrentService(service);
     if (editMode && service) {
@@ -44,7 +54,7 @@ const ServiceManagement = () => {
 
   const handleOk = () => {
     form.validateFields().then((values) => {
-      if (isEditMode) {
+      if (isEditMode && currentService) {
         // Update service
         setServices((prevServices) =>
           prevServices.map((service) =>
@@ -53,7 +63,7 @@ const ServiceManagement = () => {
         );
       } else {
         // Add new service
-        const newService = {
+        const newService: Service = {
           key: (services.length + 1).toString(),
           isDeleted: false,
           ...values,
@@ -68,7 +78,7 @@ const ServiceManagement = () => {
     setIsModalVisible(false);
   };
 
-  const handleDelete = (key) => {
+  const handleDelete = (key: string) => {
     setServices((prevServices) =>
       prevServices.map((service) =>
         service.key === key ? { ...service, isDeleted: true } : service
@@ -100,7 +110,7 @@ const ServiceManagement = () => {
     {
       title: "Action",
       key: "action",
-      render: (_, record) => (
+      render: (_ : any, record: Service) => (
         <span>
           {!record.isDeleted && (
             <>

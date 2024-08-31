@@ -1,10 +1,18 @@
 import { useEffect, useState } from "react";
-import { Table, Typography, Spin, Alert } from "antd";
+import { Table, Spin, Alert } from "antd";
 
-const { Title } = Typography;
+// Define a type for booking data
+type Booking = {
+  id: string;
+  userName: string;
+  service: string;
+  date: string;
+  timeSlot: string;
+  status: string;
+};
 
 // Demo data
-const demoBookings :any = [
+const demoBookings: Booking[] = [
   {
     id: "1",
     userName: "John Doe",
@@ -40,9 +48,9 @@ const demoBookings :any = [
 ];
 
 const AllBookings = () => {
-  const [bookings, setBookings] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const [bookings, setBookings] = useState<Booking[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     setTimeout(() => {
@@ -93,7 +101,7 @@ const AllBookings = () => {
   if (loading) return <Spin size="large" className="flex justify-center" />;
   if (error) return <Alert message={error} type="error" />;
 
-  return <Table  columns={columns} dataSource={bookings} />;
+  return <Table columns={columns} dataSource={bookings} />;
 };
 
 export default AllBookings;

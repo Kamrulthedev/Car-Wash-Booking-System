@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { Card, List } from "antd";
 import dayjs from "dayjs";
 import duration from "dayjs/plugin/duration"; // Import duration plugin for dayjs

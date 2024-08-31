@@ -8,7 +8,8 @@ const Navber = () => {
   const dropdownRef = useRef<HTMLDivElement>(null);
 
   // Mock user data to simulate roles; in a real app, this would come from context or a state manager
-  const [userRole, setUserRole] = useState("User"); 
+  const [userRole, setUserRole] = useState("Admin"); 
+console.log(setUserRole)
 
   const toggleMenu = () => {
     setIsOpen(!isOpen);

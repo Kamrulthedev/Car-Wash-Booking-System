@@ -1,18 +1,36 @@
 import { useState } from "react";
 import { Table, Button, Modal, Form, DatePicker, TimePicker, Popconfirm, Typography, Select } from "antd";
+import { SelectValue } from "antd/es/select";
 
 const { Title } = Typography;
 const { Option } = Select;
 
+// Define TypeScript interfaces
+interface Service {
+  id: string;
+  name: string;
+}
+
+interface Slot {
+  key: string;
+  service: string;
+  serviceName: string;
+  date: string;
+  startTime: string;
+  endTime: string;
+  status: "AVAILABLE" | "CANCELLED";
+  isBooked: boolean;
+}
+
 // Mock data for services
-const serviceList = [
+const serviceList: Service[] = [
   { id: "6680fa6501b460a41f03274f", name: "Car Wash" },
   { id: "6680fa6501b460a41f032750", name: "Oil Change" },
   { id: "6680fa6501b460a41f032751", name: "Tire Replacement" },
 ];
 
 // Demo data for slots
-const demoSlots = [
+const demoSlots: Slot[] = [
   {
     key: "1",
     service: "6680fa6501b460a41f03274f",
@@ -36,8 +54,8 @@ const demoSlots = [
 ];
 
 const SlotManagement = () => {
-  const [slots, setSlots] = useState(demoSlots);
-  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [slots, setSlots] = useState<Slot[]>(demoSlots);
+  const [isModalVisible, setIsModalVisible] = useState<boolean>(false);
   const [form] = Form.useForm();
 
   const showModal = () => {
@@ -47,19 +65,21 @@ const SlotManagement = () => {
 
   const handleOk = () => {
     form.validateFields().then((values) => {
-      const selectedService :any = serviceList.find((service) => service.id === values.service);
-      const newSlot = {
-        key: (slots.length + 1).toString(),
-        service: selectedService.id,
-        serviceName: selectedService.name,
-        status: "AVAILABLE",
-        isBooked: false,
-        date: values.date.format("YYYY-MM-DD"),
-        startTime: values.startTime.format("HH:mm"),
-        endTime: values.endTime.format("HH:mm"),
-      };
-      setSlots([...slots, newSlot]);
-      setIsModalVisible(false);
+      const selectedService = serviceList.find((service) => service.id === values.service);
+      if (selectedService) {
+        const newSlot: Slot = {
+          key: (slots.length + 1).toString(),
+          service: selectedService.id,
+          serviceName: selectedService.name,
+          status: "AVAILABLE",
+          isBooked: false,
+          date: values.date.format("YYYY-MM-DD"),
+          startTime: values.startTime.format("HH:mm"),
+          endTime: values.endTime.format("HH:mm"),
+        };
+        setSlots([...slots, newSlot]);
+        setIsModalVisible(false);
+      }
     });
   };
 
@@ -67,7 +87,7 @@ const SlotManagement = () => {
     setIsModalVisible(false);
   };
 
-  const toggleStatus = (key :any) => {
+  const toggleStatus = (key: string) => {
     setSlots((prevSlots) =>
       prevSlots.map((slot) =>
         slot.key === key && !slot.isBooked
@@ -102,10 +122,15 @@ const SlotManagement = () => {
       title: "Status",
       dataIndex: "status",
       key: "status",
-      render: (text :any, record :any)  => (
+      render: (status: "AVAILABLE" | "CANCELLED", record: Slot) => (
         <Select
-          value={record.status}
-          onChange={() => toggleStatus(record.key)}
+          value={status}
+          onChange={(value: SelectValue) => {
+            const newStatus = value as "AVAILABLE" | "CANCELLED";
+            if (newStatus !== status) {
+              toggleStatus(record.key);
+            }
+          }}
           disabled={record.isBooked}
           style={{ width: 120 }}
         >
@@ -117,7 +142,7 @@ const SlotManagement = () => {
     {
       title: "Action",
       key: "action",
-      render: (_:any, record : any) => (
+      render: (_: any, record: Slot) => (
         <span>
           {!record.isBooked && (
             <Popconfirm

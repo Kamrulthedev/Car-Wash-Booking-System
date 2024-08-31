@@ -1,5 +1,5 @@
 
-import React, { useState } from "react";
+import { useState } from "react";
 import { Button, Input, Form, Avatar } from "antd";
 import { EditOutlined, UserOutlined } from "@ant-design/icons";
 
