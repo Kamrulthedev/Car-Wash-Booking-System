@@ -70,3 +70,12 @@ Service Slot Countdown: Countdown timer for upcoming bookings.
 3. [Backend server] up and running (if applicable).
 
 ## Installation Steps
+
+1. 🔄 Clone the Repository:
+
+```bash
+git clone https://github.com/yourusername/car-wash-booking-system.git
+cd car-wash-booking-system
+```
+
+2. 📦 Install Dependencies:
