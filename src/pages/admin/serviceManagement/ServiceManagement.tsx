@@ -10,7 +10,11 @@ import {
   Typography,
 } from "antd";
 import { PlusOutlined, EditOutlined, DeleteOutlined } from "@ant-design/icons";
-import { useAddServiceMutation, useDeleteServiceMutation, useGetServicesQuery } from "../../../redux/features/admin/AdminApi";
+import {
+  useAddServiceMutation,
+  useDeleteServiceMutation,
+  useGetServicesQuery,
+} from "../../../redux/features/admin/AdminApi";
 import { message } from "antd";
 
 const { Title } = Typography;
@@ -31,22 +35,21 @@ const ServiceManagement = () => {
   const [currentService, setCurrentService] = useState<Service | null>(null);
   const [form] = Form.useForm();
 
+  
   const { data, refetch } = useGetServicesQuery(undefined);
   const [addService] = useAddServiceMutation();
   const [deleteService] = useDeleteServiceMutation();
 
-
   useEffect(() => {
     if (Array.isArray(data?.data)) {
-      setServices(data.data as Service[]);  // Ensure TypeScript understands the type
-    } else {
-      console.error("Data from API is not an array:", data);
+      setServices(data.data as Service[]);
     }
   }, [data]);
-  
-  
 
-  const showModal = (editMode: boolean = false, service: Service | null = null) => {
+  const showModal = (
+    editMode: boolean = false,
+    service: Service | null = null
+  ) => {
     setIsEditMode(editMode);
     setCurrentService(service);
     if (editMode && service) {
@@ -57,8 +60,6 @@ const ServiceManagement = () => {
     setIsModalVisible(true);
   };
 
-
-  // Inside your handleOk function
   const handleOk = async () => {
     try {
       const values = await form.validateFields();
@@ -72,11 +73,9 @@ const ServiceManagement = () => {
       }
       setIsModalVisible(false);
     } catch (error) {
-      console.error("Validation Failed:", error);
       message.error("Failed to add the service. Please try again.");
     }
   };
-  
 
   const handleCancel = () => {
     setIsModalVisible(false);
@@ -95,8 +94,7 @@ const ServiceManagement = () => {
       console.error("Delete failed:", error);
     }
   };
-  
-  
+
   const columns = [
     {
       title: "Service Name",
@@ -144,9 +142,7 @@ const ServiceManagement = () => {
       ),
     },
   ];
-  
-  
-  
+
   return (
     <div style={{ padding: 24, background: "#fff", minHeight: "100vh" }}>
       <Title level={2}>Service Management</Title>

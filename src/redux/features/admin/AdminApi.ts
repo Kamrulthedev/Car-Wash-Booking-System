@@ -1,3 +1,4 @@
+import { TResponceRedux } from "../../../types/global";
 import { baseApi } from "../../api/BaseApi";
 
 const AdminApi = baseApi.injectEndpoints({
@@ -10,7 +11,7 @@ const AdminApi = baseApi.injectEndpoints({
           method: "GET",
         };
       },
-      transformResponse: (response) => ({
+      transformResponse: (response : TResponceRedux<TStudent[]>) => ({
         data: response.data,
         meta: response.meta,
       }),
