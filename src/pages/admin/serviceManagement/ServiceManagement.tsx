@@ -1,10 +1,20 @@
-import { useState } from "react";
-import { Table, Button, Modal, Form, Input, InputNumber, Popconfirm, Typography } from "antd";
+import { useState, useEffect } from "react";
+import {
+  Table,
+  Button,
+  Modal,
+  Form,
+  Input,
+  InputNumber,
+  Popconfirm,
+  Typography,
+} from "antd";
 import { PlusOutlined, EditOutlined, DeleteOutlined } from "@ant-design/icons";
+import { useAddServiceMutation, useDeleteServiceMutation, useGetServicesQuery } from "../../../redux/features/admin/AdminApi";
+import { message } from "antd";
 
 const { Title } = Typography;
 
-// Define a type for service data
 interface Service {
   key: string;
   name: string;
@@ -14,32 +24,27 @@ interface Service {
   isDeleted: boolean;
 }
 
-// Demo data
-const demoServices: Service[] = [
-  {
-    key: "1",
-    name: "Full Car Wash",
-    description: "Complete car cleaning including interior and exterior.",
-    price: 50,
-    duration: 60,
-    isDeleted: false,
-  },
-  {
-    key: "2",
-    name: "Interior Cleaning",
-    description: "Thorough cleaning of car interiors.",
-    price: 30,
-    duration: 45,
-    isDeleted: false,
-  },
-];
-
 const ServiceManagement = () => {
-  const [services, setServices] = useState<Service[]>(demoServices);
+  const [services, setServices] = useState<Service[]>([]);
   const [isModalVisible, setIsModalVisible] = useState<boolean>(false);
   const [isEditMode, setIsEditMode] = useState<boolean>(false);
   const [currentService, setCurrentService] = useState<Service | null>(null);
   const [form] = Form.useForm();
+
+  const { data, refetch } = useGetServicesQuery(undefined);
+  const [addService] = useAddServiceMutation();
+  const [deleteService] = useDeleteServiceMutation();
+
+
+  useEffect(() => {
+    if (Array.isArray(data?.data)) {
+      setServices(data.data as Service[]);  // Ensure TypeScript understands the type
+    } else {
+      console.error("Data from API is not an array:", data);
+    }
+  }, [data]);
+  
+  
 
   const showModal = (editMode: boolean = false, service: Service | null = null) => {
     setIsEditMode(editMode);
@@ -52,40 +57,46 @@ const ServiceManagement = () => {
     setIsModalVisible(true);
   };
 
-  const handleOk = () => {
-    form.validateFields().then((values) => {
+
+  // Inside your handleOk function
+  const handleOk = async () => {
+    try {
+      const values = await form.validateFields();
       if (isEditMode && currentService) {
-        // Update service
-        setServices((prevServices) =>
-          prevServices.map((service) =>
-            service.key === currentService.key ? { ...service, ...values } : service
-          )
-        );
+        // Edit existing service
+        // Implement the edit logic here
       } else {
-        // Add new service
-        const newService: Service = {
-          key: (services.length + 1).toString(),
-          isDeleted: false,
-          ...values,
-        };
-        setServices([...services, newService]);
+        await addService(values).unwrap();
+        refetch();
+        message.success("Service added successfully!");
       }
       setIsModalVisible(false);
-    });
+    } catch (error) {
+      console.error("Validation Failed:", error);
+      message.error("Failed to add the service. Please try again.");
+    }
   };
+  
 
   const handleCancel = () => {
     setIsModalVisible(false);
   };
 
-  const handleDelete = (key: string) => {
-    setServices((prevServices) =>
-      prevServices.map((service) =>
-        service.key === key ? { ...service, isDeleted: true } : service
-      )
-    );
+  const handleDelete = async (id: string) => {
+    if (!id) {
+      console.error("ID is undefined");
+      return;
+    }
+    console.log("Deleting service with ID:", id);
+    try {
+      await deleteService(id).unwrap();
+      refetch();
+    } catch (error) {
+      console.error("Delete failed:", error);
+    }
   };
-
+  
+  
   const columns = [
     {
       title: "Service Name",
@@ -110,7 +121,7 @@ const ServiceManagement = () => {
     {
       title: "Action",
       key: "action",
-      render: (_ : any, record: Service) => (
+      render: (_: any, record: Service) => (
         <span>
           {!record.isDeleted && (
             <>
@@ -121,7 +132,7 @@ const ServiceManagement = () => {
               />
               <Popconfirm
                 title="Are you sure to delete this service?"
-                onConfirm={() => handleDelete(record.key)}
+                onConfirm={() => handleDelete(record._id)}
                 okText="Yes"
                 cancelText="No"
               >
@@ -133,7 +144,9 @@ const ServiceManagement = () => {
       ),
     },
   ];
-
+  
+  
+  
   return (
     <div style={{ padding: 24, background: "#fff", minHeight: "100vh" }}>
       <Title level={2}>Service Management</Title>
@@ -161,14 +174,18 @@ const ServiceManagement = () => {
           <Form.Item
             name="name"
             label="Service Name"
-            rules={[{ required: true, message: "Please input the service name!" }]}
+            rules={[
+              { required: true, message: "Please input the service name!" },
+            ]}
           >
             <Input />
           </Form.Item>
           <Form.Item
             name="description"
             label="Description"
-            rules={[{ required: true, message: "Please input the description!" }]}
+            rules={[
+              { required: true, message: "Please input the description!" },
+            ]}
           >
             <Input.TextArea />
           </Form.Item>

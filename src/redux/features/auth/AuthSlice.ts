@@ -42,8 +42,6 @@ const authSlice = createSlice({
 
 // Export actions
 export const { setUser, logout } = authSlice.actions;
-
-// Export reducer
 export default authSlice.reducer;
 
 // Selectors to access authentication state
