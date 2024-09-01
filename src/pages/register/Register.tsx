@@ -11,7 +11,7 @@ const Register = () => {
 
   const handleRegister = async (e: any) => {
     e.preventDefault();
-    const data = { name, email, password, phone, address, role: "USER" };
+    const data = { name, email, password, phone, address, role: "user" };
     console.log(data);
   };
 
@@ -126,7 +126,7 @@ const Register = () => {
             <p className="text-sm text-gray-600">
               Already have an account?{" "}
               <Link to="/login" className="text-blue-500 hover:text-blue-700">
-              Sign in here
+                Sign in here
               </Link>
             </p>
           </div>
