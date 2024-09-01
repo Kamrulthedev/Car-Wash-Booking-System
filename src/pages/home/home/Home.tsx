@@ -5,7 +5,7 @@ import ReviewSection from "../../../components/ui/ReviewSection";
 
 const Home = () => {
   return (
-    <div className="mt-[62px]">
+    <div className="mt-16 lg:mt-[62px]">
       <HeroCarousel></HeroCarousel>
       <FeaturedServices></FeaturedServices>
       <ReviewSection></ReviewSection>
