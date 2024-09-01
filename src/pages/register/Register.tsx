@@ -1,6 +1,10 @@
 // Register.jsx
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useSignUpMutation } from "../../redux/features/user/UserApi";
+import { useAppDispatch } from "../../redux/hooks";
+import Swal from "sweetalert2";
+import { setUser } from "../../redux/features/auth/AuthSlice";
 
 const Register = () => {
   const [name, setName] = useState("");
@@ -9,10 +13,33 @@ const Register = () => {
   const [phone, setPhone] = useState("");
   const [address, setAddress] = useState("");
 
-  const handleRegister = async (e: any) => {
+  const [signUp, { isLoading }] = useSignUpMutation();
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
+
+  const handleRegister = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const data = { name, email, password, phone, address, role: "user" };
-    console.log(data);
+
+    try {
+      const result = await signUp(data).unwrap();
+      Swal.fire({
+        icon: "success",
+        title: "Registration Successful!",
+        text: "You have registered successfully.",
+      });
+
+      dispatch(setUser({ user: result.data, token: result.data.token }));
+      navigate("/");
+    } catch (err) {
+      const customError = err as { data?: { message?: string } };
+      Swal.fire({
+        icon: "error",
+        title: "Registration Failed",
+        text:
+          customError?.data?.message || "An error occurred. Please try again.",
+      });
+    }
   };
 
   return (
@@ -117,9 +144,11 @@ const Register = () => {
             </div>
             <button
               type="submit"
-              className="w-full bg-green-500 text-white py-2 px-4 rounded hover:bg-green-600 transition duration-300"
+              className={`w-full bg-green-500   ${
+                isLoading ? "bg-gray-400" : "bg-green-500 hover:bg-green-600"
+              } text-white py-2 px-4 rounded hover:bg-green-600 transition duration-300`}
             >
-              Register
+              {isLoading ? "Signing up..." : "Sign Up"}
             </button>
           </div>
           <div className="mt-4 text-center">

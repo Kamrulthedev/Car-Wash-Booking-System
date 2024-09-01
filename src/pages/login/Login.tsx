@@ -10,8 +10,7 @@ const Login = () => {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
 
-  const [login, { isLoading, isError, isSuccess, error: apiError }] =
-    useLoginMutation();
+  const [login, { isLoading, }] = useLoginMutation();
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
@@ -19,8 +18,6 @@ const Login = () => {
     e.preventDefault();
     try {
       const result = await login({ email, password }).unwrap();
-
-      // Show success alert
       Swal.fire({
         icon: "success",
         title: "Login Successful!",
@@ -29,19 +26,15 @@ const Login = () => {
 
       // Dispatch user data to Redux store
       dispatch(setUser({ user: result.data, token: result.token }));
-
-      console.log("Login successful:", result.token, result.data);
-
-      // Redirect to home or dashboard
       navigate("/");
-    } catch (err: any) {
-      console.error("Login failed:", err);
+    } catch (err) {
+      const customError = err as { data?: { message?: string } };
       setError("Login failed. Please check your credentials and try again.");
       // Show error alert
       Swal.fire({
         icon: "error",
         title: "Login Failed",
-        text: err?.data?.message || error,
+        text: customError.data?.message || error,
       });
     }
   };
