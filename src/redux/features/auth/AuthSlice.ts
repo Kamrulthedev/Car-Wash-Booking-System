@@ -3,11 +3,17 @@ import { RootState } from "../../store";
 
 // Define the user type
 export type TUser = {
-  userId: string;
+  _id: string;
+  name: string;
+  email: string;
+  password: string;
+  phone: string;
   role: string;
-  iat: number;
-  exp: number;
-};
+  address: string;
+  createdAt: string;
+  updatedAt: string;
+  __v: number;
+} | null;
 
 // Define the authentication state type
 type TAuthState = {

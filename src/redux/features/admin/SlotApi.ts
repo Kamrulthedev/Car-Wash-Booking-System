@@ -1,14 +1,13 @@
 import { TResponceRedux } from "../../../types/global";
-import { TService } from "../../../types/Service";
 import { baseApi } from "../../api/BaseApi";
+
 
 const AdminApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     getServices: builder.query({
-      query: (params) => {
-        const queryString = new URLSearchParams(params).toString();
+      query: () => {
         return {
-          url: `/services?${queryString}`,
+          url: `/services/slots`,
           method: "GET",
         };
       },

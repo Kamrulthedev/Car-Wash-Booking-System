@@ -49,6 +49,16 @@ const demoSlots: Slot[] = [
     startTime: "10:00",
     endTime: "15:00",
     status: "AVAILABLE",
+    isBooked: false,
+  },
+  {
+    key: "2",
+    service: "6680fa6501b460a41f03274f",
+    serviceName: "Car Wash",
+    date: "2024-06-16",
+    startTime: "10:00",
+    endTime: "15:00",
+    status: "AVAILABLE",
     isBooked: true,
   },
 ];
@@ -91,7 +101,7 @@ const SlotManagement = () => {
     setSlots((prevSlots) =>
       prevSlots.map((slot) =>
         slot.key === key && !slot.isBooked
-          ? { ...slot, status: slot.status === "AVAILABLE" ? "CANCELLED" : "AVAILABLE" }
+          ? { ...slot, status: slot.status === "AVAILABLE" ? "CANCELLED" : "AVAILABLE" : "BOOKED" }
           : slot
       )
     );
@@ -122,11 +132,11 @@ const SlotManagement = () => {
       title: "Status",
       dataIndex: "status",
       key: "status",
-      render: (status: "AVAILABLE" | "CANCELLED", record: Slot) => (
+      render: (status: "AVAILABLE" | "CANCELLED" | "BOOKED", record: Slot) => (
         <Select
           value={status}
           onChange={(value: SelectValue) => {
-            const newStatus = value as "AVAILABLE" | "CANCELLED";
+            const newStatus = value as "AVAILABLE" | "CANCELLED" | "BOOKED";
             if (newStatus !== status) {
               toggleStatus(record.key);
             }
@@ -136,6 +146,7 @@ const SlotManagement = () => {
         >
           <Option value="AVAILABLE">AVAILABLE</Option>
           <Option value="CANCELLED">CANCELLED</Option>
+          <Option value="BOOKED">BOOKED</Option>
         </Select>
       ),
     },

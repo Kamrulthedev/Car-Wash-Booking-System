@@ -14,13 +14,15 @@ import {
   useAddServiceMutation,
   useDeleteServiceMutation,
   useGetServicesQuery,
+  useUpdateServiceMutation,
 } from "../../../redux/features/admin/AdminApi";
 import { message } from "antd";
 
 const { Title } = Typography;
 
 interface Service {
-  key: string;
+  _id: string;
+  key?: string;
   name: string;
   description: string;
   price: number;
@@ -35,10 +37,10 @@ const ServiceManagement = () => {
   const [currentService, setCurrentService] = useState<Service | null>(null);
   const [form] = Form.useForm();
 
-  
   const { data, refetch } = useGetServicesQuery(undefined);
   const [addService] = useAddServiceMutation();
   const [deleteService] = useDeleteServiceMutation();
+  const [updateService] = useUpdateServiceMutation();
 
   useEffect(() => {
     if (Array.isArray(data?.data)) {
@@ -64,16 +66,18 @@ const ServiceManagement = () => {
     try {
       const values = await form.validateFields();
       if (isEditMode && currentService) {
-        // Edit existing service
-        // Implement the edit logic here
+        // Update existing service
+        await updateService({ id: currentService._id, ...values }).unwrap();
+        message.success("Service updated successfully!");
       } else {
+        // Add new service
         await addService(values).unwrap();
-        refetch();
         message.success("Service added successfully!");
       }
+      refetch();
       setIsModalVisible(false);
     } catch (error) {
-      message.error("Failed to add the service. Please try again.");
+      message.error("Failed to save the service. Please try again.");
     }
   };
 
@@ -83,15 +87,15 @@ const ServiceManagement = () => {
 
   const handleDelete = async (id: string) => {
     if (!id) {
-      console.error("ID is undefined");
+      message.error("ID Is Undefined");
       return;
     }
-    console.log("Deleting service with ID:", id);
+    message.error(`Deleting service with ID: ${id}`);
     try {
       await deleteService(id).unwrap();
       refetch();
     } catch (error) {
-      console.error("Delete failed:", error);
+      message.error(`Delete failed ${error}`);
     }
   };
 

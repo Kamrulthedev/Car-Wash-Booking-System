@@ -17,7 +17,7 @@ export type TError = {
   };
   
   export type TResponce<T> = {
-    data?: T | any;
+    data?: T;
     error: TError;
     meta?: Tmeta;
     success: boolean;
