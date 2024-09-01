@@ -1,20 +1,49 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useLoginMutation } from "../../redux/features/auth/AuthApi";
+import Swal from "sweetalert2";
+import { useAppDispatch } from "../../redux/hooks";
+import { setUser } from "../../redux/features/auth/AuthSlice";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
 
-  console.log(setError)
+  const [login, { isLoading, isError, isSuccess, error: apiError }] =
+    useLoginMutation();
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
 
-  const handleLogin = async (e: any) => {
+  const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const data = {
-      email,
-      password,
-    };
-    console.log(data);
+    try {
+      const result = await login({ email, password }).unwrap();
+
+      // Show success alert
+      Swal.fire({
+        icon: "success",
+        title: "Login Successful!",
+        text: "You have logged in successfully.",
+      });
+
+      // Dispatch user data to Redux store
+      dispatch(setUser({ user: result.data, token: result.token }));
+
+      console.log("Login successful:", result.token, result.data);
+
+      // Redirect to home or dashboard
+      navigate("/");
+    } catch (err: any) {
+      console.error("Login failed:", err);
+      setError("Login failed. Please check your credentials and try again.");
+      // Show error alert
+      Swal.fire({
+        icon: "error",
+        title: "Login Failed",
+        text: err?.data?.message || error,
+      });
+    }
   };
 
   return (
@@ -71,9 +100,12 @@ const Login = () => {
             </div>
             <button
               type="submit"
-              className="w-full bg-green-500 text-white py-2 px-4 rounded hover:bg-green-600 transition duration-300"
+              className={`w-full py-2 px-4 rounded transition duration-300 ${
+                isLoading ? "bg-gray-400" : "bg-green-500 hover:bg-green-600"
+              } text-white`}
+              disabled={isLoading}
             >
-              Login
+              {isLoading ? "Logging in..." : "Login"}
             </button>
           </div>
           <div className="mt-4 text-center">
