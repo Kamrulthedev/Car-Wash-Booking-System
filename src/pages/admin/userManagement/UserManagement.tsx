@@ -7,39 +7,38 @@ const { Title } = Typography;
 const { Option } = Select;
 
 const UserManagement: React.FC = () => {
-  const { data, isLoading, error, refetch } = useGetUsersQuery(undefined); // Fetch users from API
-  const [updateUser] = useUpdateUSerMutation(); // Mutation hook for updating user roles
+  const { data, isLoading, error, refetch } = useGetUsersQuery(undefined); 
+  const [updateUser] = useUpdateUSerMutation(); 
   const [users, setUsers] = useState<TUser[]>([]);
 
-  // Update local state when data changes
   React.useEffect(() => {
     if (data) {
-      setUsers(data.data); // Assuming data has the format { data: User[] }
+      setUsers(data.data || []);
     }
   }, [data]);
+  
 
   const handleRoleChange = async (userId: string, newRole: "user" | "admin") => {
     try {
-      await updateUser({ id: userId, role: newRole }).unwrap(); // Perform the update
+      await updateUser({ id: userId, role: newRole }).unwrap(); 
       message.success("User role updated successfully!");
-      refetch(); // Refetch data to get updated list
+      refetch();
     } catch (err) {
       message.error("Failed to update user role. Please try again.");
     }
   };
 
   const toggleUserRole = async (userId: string) => {
-    const user = users.find((u) => u.id === userId);
+    const user = users.find((u) => u._id === userId); // Match by _id
     if (!user) return;
-
     const newRole = user.role === "user" ? "admin" : "user";
-
     try {
-      await handleRoleChange(userId, newRole); // Toggle user role
+      await handleRoleChange(userId, newRole);
     } catch (err) {
       message.error("Failed to toggle user role. Please try again.");
     }
   };
+  
 
   const columns = [
     {
@@ -75,10 +74,10 @@ const UserManagement: React.FC = () => {
     {
       title: "Action",
       key: "action",
-      render: (_: any, record: User) => (
+      render: (_: any, record: TUser) => (
         <Popconfirm
           title={`Are you sure you want to change the role of ${record.name} to ${record.role === "user" ? "admin" : "user"}?`}
-          onConfirm={() => toggleUserRole(record.id)}
+          onConfirm={() => toggleUserRole(record._id)}
           okText="Yes"
           cancelText="No"
         >
@@ -87,6 +86,7 @@ const UserManagement: React.FC = () => {
       ),
     },
   ];
+  
 
   if (isLoading) return <div>Loading...</div>;
   if (error) return <div>Error loading users.</div>;

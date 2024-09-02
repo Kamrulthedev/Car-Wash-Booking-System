@@ -4,7 +4,7 @@ export type TUser = {
   email: string;
   password: string;
   phone: string;
-  role: string;
+  role: "user" | "admin";
   address: string;
   createdAt: string;
   updatedAt: string;
