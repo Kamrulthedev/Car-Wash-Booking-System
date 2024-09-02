@@ -16,6 +16,18 @@ const SlotApi = baseApi.injectEndpoints({
         meta: response.meta,
       }),
     }),
+    getSlotAvailability: builder.query({
+      query: () => {
+        return {
+          url: "/slots/availability",
+          method: "GET",
+        };
+      },
+      transformResponse: (response: TResponceRedux<TSlot[]>) => ({
+        data: response.data,
+        meta: response.meta,
+      }),
+    }),
     addSlot: builder.mutation({
       query: (data) => ({
         url: `/services/slots`,
@@ -36,4 +48,9 @@ const SlotApi = baseApi.injectEndpoints({
   overrideExisting: false,
 });
 
-export const { useAddSlotMutation, useGetSlotsQuery, useUpdateSlotMutation } = SlotApi;
+export const {
+  useAddSlotMutation,
+  useGetSlotsQuery,
+  useUpdateSlotMutation,
+  useGetSlotAvailabilityQuery,
+} = SlotApi;

@@ -33,7 +33,6 @@ const UpcomingBooking = () => {
 
   useEffect(() => {
     if (data && data.data) {
-      console.log(data.data)
       const transformedData = data.data.map((booking: any) => ({
         key: booking._id,
         serviceName: booking.service.name,

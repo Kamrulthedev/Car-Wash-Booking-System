@@ -1,7 +1,8 @@
 import { useState, useEffect } from "react";
 import moment from "moment";
+import { useGetSlotAvailabilityQuery } from "../../../redux/features/admin/SlotApi";
 
-// Define the type for bookings
+
 type Booking = {
   id: string;
   serviceName: string;
@@ -17,36 +18,13 @@ type TimeRemaining = {
   seconds: number;
 };
 
-// Sample bookings data
-const demoBookings: Booking[] = [
-  {
-    id: "1",
-    serviceName: "Car Wash",
-    date: "2024-09-05",
-    startTime: "09:00",
-    endTime: "10:00",
-  },
-  {
-    id: "2",
-    serviceName: "Oil Change",
-    date: "2024-09-06",
-    startTime: "11:00",
-    endTime: "12:00",
-  },
-  {
-    id: "3",
-    serviceName: "Tire Rotation",
-    date: "2024-09-07",
-    startTime: "14:00",
-    endTime: "15:00",
-  },
-];
-
 const SlotCountdown = () => {
   const [nextBooking, setNextBooking] = useState<Booking | null>(null);
   const [countdowns, setCountdowns] = useState<Record<string, TimeRemaining>>({});
+  const [bookings, setBookings] = useState<Booking[]>([]);
 
-  // Helper function to calculate time remaining for a booking
+  const { data, isLoading } = useGetSlotAvailabilityQuery(undefined);
+
   const calculateTimeRemaining = (date: string, startTime: string): TimeRemaining => {
     const bookingTime = moment(`${date} ${startTime}`, "YYYY-MM-DD HH:mm");
     const now = moment();
@@ -60,13 +38,28 @@ const SlotCountdown = () => {
     };
   };
 
-  // Update countdown timers for all upcoming bookings
+
+  useEffect(() => {
+    if (data && data.data && data.data.length > 0) {
+      const NewBookingdata: Booking[] = data.data.map((item: any) => ({
+        id: item._id,
+        serviceName: item.service.name, 
+        date: item.date,
+        startTime: item.startTime,
+        endTime: item.endTime,
+      }));
+
+      setBookings(NewBookingdata);
+    }
+  }, [data]);
+
+
   useEffect(() => {
     const intervalId = setInterval(() => {
       const newCountdowns: Record<string, TimeRemaining> = {};
       let nearestBooking: Booking | null = null;
 
-      demoBookings.forEach((booking) => {
+      bookings.forEach((booking) => {
         const timeRemaining = calculateTimeRemaining(booking.date, booking.startTime);
         newCountdowns[booking.id] = timeRemaining;
 
@@ -83,7 +76,11 @@ const SlotCountdown = () => {
     }, 1000);
 
     return () => clearInterval(intervalId);
-  }, []);
+  }, [bookings]);
+
+  if(!data){
+    <p>Loading Slot Data.......{isLoading}</p>
+  }
 
   return (
     <div className="p-4">
@@ -104,7 +101,7 @@ const SlotCountdown = () => {
 
       <h2 className="text-xl font-bold mb-4">All Upcoming Bookings</h2>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-        {demoBookings.map((booking) => (
+        {bookings.map((booking) => (
           <div key={booking.id} className="p-4 border rounded shadow-md">
             <h3 className="text-lg font-semibold">{booking.serviceName}</h3>
             <p className="text-gray-600">

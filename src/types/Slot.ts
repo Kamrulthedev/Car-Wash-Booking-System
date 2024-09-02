@@ -8,5 +8,5 @@ export type TSlot  = {
     __v: number;
     createdAt: string;
     updatedAt: string;
-  }
+  };
   
