@@ -1,111 +1,120 @@
-import { useState } from "react";
-import { Table, Button, Modal, Form, DatePicker, TimePicker, Popconfirm, Typography, Select } from "antd";
-import { SelectValue } from "antd/es/select";
-
+import { useState, useEffect } from "react";
+import {
+  Table,
+  Button,
+  Modal,
+  Form,
+  DatePicker,
+  TimePicker,
+  Popconfirm,
+  Typography,
+  Select,
+  message,
+} from "antd";
+import {
+  useAddSlotMutation,
+  useGetSlotsQuery,
+  useUpdateSlotMutation,
+} from "../../../redux/features/admin/SlotApi";
+import {
+  useGetServicesQuery,
+} from "../../../redux/features/admin/AdminApi";
+import { TService } from "../../../types/Service";
 const { Title } = Typography;
 const { Option } = Select;
 
-// Define TypeScript interfaces
-interface Service {
-  id: string;
-  name: string;
-}
-
 interface Slot {
   key: string;
+  _id: string;
   service: string;
   serviceName: string;
   date: string;
   startTime: string;
   endTime: string;
-  status: "AVAILABLE" | "CANCELLED";
   isBooked: boolean;
 }
 
-// Mock data for services
-const serviceList: Service[] = [
-  { id: "6680fa6501b460a41f03274f", name: "Car Wash" },
-  { id: "6680fa6501b460a41f032750", name: "Oil Change" },
-  { id: "6680fa6501b460a41f032751", name: "Tire Replacement" },
-];
-
-// Demo data for slots
-const demoSlots: Slot[] = [
-  {
-    key: "1",
-    service: "6680fa6501b460a41f03274f",
-    serviceName: "Car Wash",
-    date: "2024-06-15",
-    startTime: "09:00",
-    endTime: "14:00",
-    status: "AVAILABLE",
-    isBooked: false,
-  },
-  {
-    key: "2",
-    service: "6680fa6501b460a41f03274f",
-    serviceName: "Car Wash",
-    date: "2024-06-16",
-    startTime: "10:00",
-    endTime: "15:00",
-    status: "AVAILABLE",
-    isBooked: false,
-  },
-  {
-    key: "2",
-    service: "6680fa6501b460a41f03274f",
-    serviceName: "Car Wash",
-    date: "2024-06-16",
-    startTime: "10:00",
-    endTime: "15:00",
-    status: "AVAILABLE",
-    isBooked: true,
-  },
-];
-
 const SlotManagement = () => {
-  const [slots, setSlots] = useState<Slot[]>(demoSlots);
+  const { data: slotsData, refetch } = useGetSlotsQuery(undefined);
+  const { data: servicesData } = useGetServicesQuery(undefined);
+  const [addSlot] = useAddSlotMutation();
+  const [updateSlotStatus] = useUpdateSlotMutation();
+  const [slots, setSlots] = useState<Slot[]>([]);
   const [isModalVisible, setIsModalVisible] = useState<boolean>(false);
   const [form] = Form.useForm();
+
+  const serviceList: TService[] = servicesData?.data ?? [];
+
+  useEffect(() => {
+    if (slotsData && slotsData.data && serviceList.length > 0) {
+      const fetchedSlots = slotsData.data.map((slot: any, index: number) => ({
+        key: index.toString(),
+        _id: slot._id,
+        service: slot.service ? slot.service._id : "",
+        serviceName: slot.service ? slot.service.name : "No Service",
+        date: slot.date,
+        startTime: slot.startTime,
+        endTime: slot.endTime,
+        isBooked: slot.isBooked === "booked", // Convert to boolean for easier use
+      }));
+      setSlots(fetchedSlots);
+    }
+  }, [slotsData, serviceList]);
 
   const showModal = () => {
     form.resetFields();
     setIsModalVisible(true);
   };
 
-  const handleOk = () => {
-    form.validateFields().then((values) => {
-      const selectedService = serviceList.find((service) => service.id === values.service);
+  const ServiceOptions = serviceList.map((item: any) => ({
+    value: item._id,
+    label: `${item.name}`,
+  }));
+
+  const handleOk = async () => {
+    try {
+      const values = await form.validateFields();
+      const selectedService = serviceList.find(
+        (service: any) => service._id === values.service
+      );
       if (selectedService) {
-        const newSlot: Slot = {
-          key: (slots.length + 1).toString(),
-          service: selectedService.id,
-          serviceName: selectedService.name,
-          status: "AVAILABLE",
-          isBooked: false,
+        const newSlotData = {
+          service: selectedService._id,
           date: values.date.format("YYYY-MM-DD"),
           startTime: values.startTime.format("HH:mm"),
           endTime: values.endTime.format("HH:mm"),
         };
-        setSlots([...slots, newSlot]);
+        await addSlot(newSlotData).unwrap();
+        message.success("Slot added successfully!");
+        refetch();
         setIsModalVisible(false);
       }
-    });
+    } catch (error) {
+      message.error("Failed to add the slot. Please try again.");
+    }
   };
 
   const handleCancel = () => {
     setIsModalVisible(false);
   };
 
-  const toggleStatus = (key: string) => {
-    setSlots((prevSlots) =>
-      prevSlots.map((slot) =>
-        slot.key === key && !slot.isBooked
-          ? { ...slot, status: slot.status === "AVAILABLE" ? "CANCELLED" : "AVAILABLE" : "BOOKED" }
-          : slot
-      )
-    );
+  const toggleStatus = async (key: string) => {
+    const slotToUpdate = slots.find((slot) => slot.key === key);
+    if (!slotToUpdate) return;
+    const newStatus = slotToUpdate.isBooked ? "available" : "booked"; 
+    try {
+      const updateData = {
+        id: slotToUpdate._id,
+        isBooked: newStatus,
+      };
+      await updateSlotStatus(updateData).unwrap();
+      message.success("Slot status updated successfully!");
+      refetch();
+    } catch (error) {
+      message.error("Failed to update the slot status. Please try again.");
+    }
   };
+  
 
   const columns = [
     {
@@ -130,23 +139,16 @@ const SlotManagement = () => {
     },
     {
       title: "Status",
-      dataIndex: "status",
-      key: "status",
-      render: (status: "AVAILABLE" | "CANCELLED" | "BOOKED", record: Slot) => (
+      dataIndex: "isBooked",
+      key: "isBooked",
+      render: (isBooked: boolean, record: Slot) => (
         <Select
-          value={status}
-          onChange={(value: SelectValue) => {
-            const newStatus = value as "AVAILABLE" | "CANCELLED" | "BOOKED";
-            if (newStatus !== status) {
-              toggleStatus(record.key);
-            }
-          }}
-          disabled={record.isBooked}
+          value={isBooked ? "booked" : "available"}
+          onChange={() => toggleStatus(record.key)}
           style={{ width: 120 }}
         >
-          <Option value="AVAILABLE">AVAILABLE</Option>
-          <Option value="CANCELLED">CANCELLED</Option>
-          <Option value="BOOKED">BOOKED</Option>
+          <Option value="available">AVAILABLE</Option>
+          <Option value="booked">BOOKED</Option>
         </Select>
       ),
     },
@@ -154,18 +156,14 @@ const SlotManagement = () => {
       title: "Action",
       key: "action",
       render: (_: any, record: Slot) => (
-        <span>
-          {!record.isBooked && (
-            <Popconfirm
-              title="Are you sure to change the status of this slot?"
-              onConfirm={() => toggleStatus(record.key)}
-              okText="Yes"
-              cancelText="No"
-            >
-              <Button type="link">Toggle Status</Button>
-            </Popconfirm>
-          )}
-        </span>
+        <Popconfirm
+          title="Are you sure to change the status of this slot?"
+          onConfirm={() => toggleStatus(record.key)}
+          okText="Yes"
+          cancelText="No"
+        >
+          <Button type="link">Toggle Status</Button>
+        </Popconfirm>
       ),
     },
   ];
@@ -176,22 +174,21 @@ const SlotManagement = () => {
       <Button type="primary" onClick={showModal} style={{ marginBottom: 16 }}>
         Add Slot
       </Button>
-      <Table dataSource={slots} columns={columns} rowKey="key" />
+      <Table dataSource={slots} columns={columns} rowKey="_id" />
 
-      <Modal title="Add Slot" visible={isModalVisible} onOk={handleOk} onCancel={handleCancel}>
+      <Modal
+        title="Add Slot"
+        visible={isModalVisible}
+        onOk={handleOk}
+        onCancel={handleCancel}
+      >
         <Form form={form} layout="vertical">
           <Form.Item
             name="service"
             label="Service"
             rules={[{ required: true, message: "Please select a service!" }]}
           >
-            <Select placeholder="Select a Service">
-              {serviceList.map((service) => (
-                <Option key={service.id} value={service.id}>
-                  {service.name}
-                </Option>
-              ))}
-            </Select>
+            <Select placeholder="Select a Service" options={ServiceOptions} />
           </Form.Item>
           <Form.Item
             name="date"
@@ -203,7 +200,9 @@ const SlotManagement = () => {
           <Form.Item
             name="startTime"
             label="Start Time"
-            rules={[{ required: true, message: "Please select the start time!" }]}
+            rules={[
+              { required: true, message: "Please select the start time!" },
+            ]}
           >
             <TimePicker format="HH:mm" style={{ width: "100%" }} />
           </Form.Item>

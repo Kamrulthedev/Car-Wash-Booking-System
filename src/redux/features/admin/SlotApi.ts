@@ -1,49 +1,38 @@
 import { TResponceRedux } from "../../../types/global";
 import { baseApi } from "../../api/BaseApi";
 
-
-const AdminApi = baseApi.injectEndpoints({
+const SlotApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
-    getServices: builder.query({
+    getSlots: builder.query({
       query: () => {
         return {
-          url: `/services/slots`,
+          url: "/slots/all",
           method: "GET",
         };
       },
-      transformResponse: (response : TResponceRedux<TService[]>) => ({
+      transformResponse: (response: TResponceRedux<[]>) => ({
         data: response.data,
         meta: response.meta,
       }),
     }),
-
-    addService: builder.mutation({
+    addSlot: builder.mutation({
       query: (data) => ({
-        url: "/services",
+        url: `/services/slots`,
         method: "POST",
         body: data,
       }),
     }),
-    deleteService: builder.mutation({
-      query: (id) => ({
-        url: `/services/${id}`,
-        method: "DELETE",
-      }),
-    }),
-    updateService: builder.mutation({
-      query: ({ id, ...service }) => ({
-        url: `/services/${id}`,
-        method: 'PUT',
-        body: service,
-      }),
+    updateSlot: builder.mutation({
+      query: ({ id, ...slotData }) => {
+        return {
+          url: `/slots/${id}`,
+          method: "PUT",
+          body: slotData,
+        };
+      },
     }),
   }),
   overrideExisting: false,
 });
 
-export const {
-  useGetServicesQuery,
-  useAddServiceMutation,
-  useDeleteServiceMutation,
-  useUpdateServiceMutation,
-} = AdminApi;
+export const { useAddSlotMutation, useGetSlotsQuery, useUpdateSlotMutation } = SlotApi;

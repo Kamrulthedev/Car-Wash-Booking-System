@@ -14,7 +14,7 @@ export type TError = {
     page: number;
     total: boolean;
     totalPage: number;
-  };
+  } | undefined;
   
   export type TResponce<T> = {
     data?: T;
@@ -22,7 +22,7 @@ export type TError = {
     meta?: Tmeta;
     success: boolean;
     message?: string;
-  };
+  } | undefined;
   
   
   export type TResponceRedux<T> = TResponce<T> & BaseQueryApi;
