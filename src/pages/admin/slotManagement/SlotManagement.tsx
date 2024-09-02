@@ -20,6 +20,7 @@ import {
   useGetServicesQuery,
 } from "../../../redux/features/admin/AdminApi";
 import { TService } from "../../../types/Service";
+import { PlusOutlined } from "@ant-design/icons";
 const { Title } = Typography;
 const { Option } = Select;
 
@@ -171,7 +172,7 @@ const SlotManagement = () => {
   return (
     <div style={{ padding: 24, background: "#fff", minHeight: "100vh" }}>
       <Title level={2}>Slot Management</Title>
-      <Button type="primary" onClick={showModal} style={{ marginBottom: 16 }}>
+      <Button type="primary"       icon={<PlusOutlined />} onClick={showModal} style={{ marginBottom: 16 }}>
         Add Slot
       </Button>
       <Table dataSource={slots} columns={columns} rowKey="_id" />
