@@ -23,14 +23,14 @@ const PastBooking = () => {
   };
 
   useEffect(() => {
-    if (data && data.data) {
-      const bookingData: any = data.data.map((booking: any) => ({
-        key: booking._id,
-        serviceName: booking.service.name,
-        date: formatDate(booking.createdAt),
-        time: `${booking.slot.startTime} - ${booking.slot.endTime}`,
-        price: booking.service.price,
-        status: booking.status,
+    if (data && data?.data) {
+      const bookingData: any = data?.data?.map((booking: any) => ({
+        key: booking?._id,
+        serviceName: booking?.service?.name || "No Service",
+        date: formatDate(booking?.createdAt),
+        time: `${booking?.slot?.startTime} - ${booking?.slot?.endTime}`,
+        price: booking?.service?.price,
+        status: booking?.status,
       }));
 
       setBookings(bookingData);

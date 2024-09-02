@@ -44,7 +44,7 @@ const ServiceManagement = () => {
 
   useEffect(() => {
     if (Array.isArray(data?.data)) {
-      setServices(data.data as Service[]);
+      setServices(data?.data as Service[]);
     }
   }, [data]);
 

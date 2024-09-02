@@ -7,35 +7,22 @@ import { useUpdateUSerMutation } from "../../../redux/features/admin/UserManagem
 import { updateUser } from "../../../redux/features/auth/AuthSlice";
 
 
-type user = {
-  _id: string;
-  name: string;
-  email: string;
-  password: string;
-  phone: string;
-  role: string;
-  address: string;
-  createdAt: string;
-  updatedAt: string;
-  __v: number;
-};
-
 const AccountInfo = () => {
   const [isEditing, setIsEditing] = useState(false);
   const [form] = Form.useForm();
   const dispatch = useAppDispatch();
 
-  const user :user = useAppSelector((state: RootState) => state.auth.user);
+  const user  = useAppSelector((state: RootState) => state?.auth?.user);
 
   const [updateUserMutation, { isLoading }] = useUpdateUSerMutation();
 
   useEffect(() => {
     if (user) {
       form.setFieldsValue({
-        name: user.name,
-        email: user.email,
-        phone: user.phone,
-        address: user.address,
+        name: user?.name,
+        email: user?.email,
+        phone: user?.phone,
+        address: user?.address,
       });
     }
   }, [user, form]);
@@ -70,7 +57,7 @@ const AccountInfo = () => {
       <div className="flex items-center mb-6">
         <Avatar size={64} icon={<UserOutlined />} />
         <div className="ml-4">
-          <h1 className="text-2xl font-bold">{user.name}</h1>
+          <h1 className="text-2xl font-bold">{user?.name}</h1>
           <Button
             type="primary"
             icon={<EditOutlined />}

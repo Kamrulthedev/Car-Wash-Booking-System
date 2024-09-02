@@ -12,10 +12,16 @@ type data = {
   createdAt: string;
   updatedAt: string;
   __v: number;
-};
+} | null;
 // Define the user type
 export type TUser = {
-  data: data;
+  _id?: string;
+  data: data,
+  role?:string
+  name?: string;
+  email?: string;
+  phone?: string;
+  address?: string;
 } | null;
 
 // Define the authentication state type

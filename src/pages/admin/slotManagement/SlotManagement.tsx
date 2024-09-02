@@ -47,16 +47,17 @@ const SlotManagement = () => {
   const serviceList: TService[] = servicesData?.data ?? [];
 
   useEffect(() => {
-    if (slotsData && slotsData.data && serviceList.length > 0) {
+    if (slotsData && slotsData?.data && serviceList?.length > 0) {
+      console.log(slotsData.data)
       const fetchedSlots = slotsData.data.map((slot: any, index: number) => ({
         key: index.toString(),
-        _id: slot._id,
-        service: slot.service ? slot.service._id : "",
-        serviceName: slot.service ? slot.service.name : "No Service",
-        date: slot.date,
-        startTime: slot.startTime,
-        endTime: slot.endTime,
-        isBooked: slot.isBooked === "booked", // Convert to boolean for easier use
+        _id: slot?._id,
+        service: slot?.service ? slot?.service?._id : "",
+        serviceName: slot?.service ? slot?.service?.name : "No Service",
+        date: slot?.date,
+        startTime: slot?.startTime,
+        endTime: slot?.endTime,
+        isBooked: slot?.isBooked === "booked", 
       }));
       setSlots(fetchedSlots);
     }
@@ -68,22 +69,22 @@ const SlotManagement = () => {
   };
 
   const ServiceOptions = serviceList.map((item: any) => ({
-    value: item._id,
-    label: `${item.name}`,
+    value: item?._id,
+    label: `${item?.name}`,
   }));
 
   const handleOk = async () => {
     try {
       const values = await form.validateFields();
       const selectedService = serviceList.find(
-        (service: any) => service._id === values.service
+        (service: any) => service?._id === values.service
       );
       if (selectedService) {
         const newSlotData = {
           service: selectedService._id,
-          date: values.date.format("YYYY-MM-DD"),
-          startTime: values.startTime.format("HH:mm"),
-          endTime: values.endTime.format("HH:mm"),
+          date: values?.date.format("YYYY-MM-DD"),
+          startTime: values?.startTime.format("HH:mm"),
+          endTime: values?.endTime.format("HH:mm"),
         };
         await addSlot(newSlotData).unwrap();
         message.success("Slot added successfully!");
@@ -100,7 +101,7 @@ const SlotManagement = () => {
   };
 
   const toggleStatus = async (key: string) => {
-    const slotToUpdate = slots.find((slot) => slot.key === key);
+    const slotToUpdate = slots.find((slot) => slot?.key === key);
     if (!slotToUpdate) return;
     const newStatus = slotToUpdate.isBooked ? "available" : "booked"; 
     try {

@@ -56,7 +56,7 @@ const router = createBrowserRouter([
         element:<Admin></Admin>,
         children:[
           {
-            path:'bookings',
+            path:'all-bookings',
             element:<AllBookings></AllBookings>
           },
           {

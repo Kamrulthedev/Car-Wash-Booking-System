@@ -40,13 +40,13 @@ const SlotCountdown = () => {
 
 
   useEffect(() => {
-    if (data && data.data && data.data.length > 0) {
-      const NewBookingdata: Booking[] = data.data.map((item: any) => ({
-        id: item._id,
-        serviceName: item.service.name, 
-        date: item.date,
-        startTime: item.startTime,
-        endTime: item.endTime,
+    if (data && data?.data && data?.data?.length > 0) {
+      const NewBookingdata: Booking[] = data?.data?.map((item: any) => ({
+        id: item?._id,
+        serviceName: item?.service?.name || "No Service", 
+        date: item?.date,
+        startTime: item?.startTime,
+        endTime: item?.endTime,
       }));
 
       setBookings(NewBookingdata);
@@ -60,12 +60,12 @@ const SlotCountdown = () => {
       let nearestBooking: Booking | null = null;
 
       bookings.forEach((booking) => {
-        const timeRemaining = calculateTimeRemaining(booking.date, booking.startTime);
-        newCountdowns[booking.id] = timeRemaining;
+        const timeRemaining = calculateTimeRemaining(booking?.date, booking?.startTime);
+        newCountdowns[booking?.id] = timeRemaining;
 
         if (
-          (!nearestBooking || moment(`${booking.date} ${booking.startTime}`).isBefore(`${nearestBooking.date} ${nearestBooking.startTime}`)) &&
-          moment(`${booking.date} ${booking.startTime}`).isAfter(moment())
+          (!nearestBooking || moment(`${booking?.date} ${booking?.startTime}`).isBefore(`${nearestBooking?.date} ${nearestBooking?.startTime}`)) &&
+          moment(`${booking?.date} ${booking?.startTime}`).isAfter(moment())
         ) {
           nearestBooking = booking;
         }
@@ -88,13 +88,13 @@ const SlotCountdown = () => {
 
       {nextBooking && (
         <div className="mb-6 p-4 border rounded shadow-lg">
-          <h2 className="text-xl font-semibold mb-2">Next Booking: {nextBooking.serviceName}</h2>
+          <h2 className="text-xl font-semibold mb-2">Next Booking: {nextBooking?.serviceName}</h2>
           <p className="text-gray-600">
-            {nextBooking.date} | {nextBooking.startTime} - {nextBooking.endTime}
+            {nextBooking.date} | {nextBooking?.startTime} - {nextBooking?.endTime}
           </p>
           <p className="text-red-500 font-semibold">
-            Countdown: {countdowns[nextBooking.id]?.days}d {countdowns[nextBooking.id]?.hours}h{" "}
-            {countdowns[nextBooking.id]?.minutes}m {countdowns[nextBooking.id]?.seconds}s
+            Countdown: {countdowns[nextBooking?.id]?.days}d {countdowns[nextBooking.id]?.hours}h{" "}
+            {countdowns[nextBooking.id]?.minutes}m {countdowns[nextBooking?.id]?.seconds}s
           </p>
         </div>
       )}
@@ -102,14 +102,14 @@ const SlotCountdown = () => {
       <h2 className="text-xl font-bold mb-4">All Upcoming Bookings</h2>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {bookings.map((booking) => (
-          <div key={booking.id} className="p-4 border rounded shadow-md">
-            <h3 className="text-lg font-semibold">{booking.serviceName}</h3>
+          <div key={booking?.id} className="p-4 border rounded shadow-md">
+            <h3 className="text-lg font-semibold">{booking?.serviceName}</h3>
             <p className="text-gray-600">
-              {booking.date} | {booking.startTime} - {booking.endTime}
+              {booking?.date} | {booking?.startTime} - {booking?.endTime}
             </p>
             <p className="text-red-500 font-semibold">
-              Countdown: {countdowns[booking.id]?.days}d {countdowns[booking.id]?.hours}h{" "}
-              {countdowns[booking.id]?.minutes}m {countdowns[booking.id]?.seconds}s
+              Countdown: {countdowns[booking?.id]?.days}d {countdowns[booking?.id]?.hours}h{" "}
+              {countdowns[booking?.id]?.minutes}m {countdowns[booking?.id]?.seconds}s
             </p>
           </div>
         ))}

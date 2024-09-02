@@ -32,14 +32,14 @@ const UpcomingBooking = () => {
   const { data, isLoading } = useGetMyPendingBookingsQuery(undefined);
 
   useEffect(() => {
-    if (data && data.data) {
-      const transformedData = data.data.map((booking: any) => ({
-        key: booking._id,
-        serviceName: booking.service.name,
-        date: booking.slot.date, 
-        startTime: booking.slot.startTime, 
-        endTime: booking.slot.endTime,
-        price: `$${booking.service.price}`, 
+    if (data && data?.data) {
+      const transformedData = data?.data?.map((booking: any) => ({
+        key: booking?._id,
+        serviceName: booking?.service?.name || "No Service",
+        date: booking?.slot?.date, 
+        startTime: booking?.slot?.startTime, 
+        endTime: booking?.slot?.endTime,
+        price: `$${booking?.service?.price}`, 
       }));
 
       setBookings(transformedData);
@@ -47,9 +47,9 @@ const UpcomingBooking = () => {
       // Initialize time remaining calculation for each booking
       const updatedTimes: Record<string, string> = {};
       transformedData.forEach((booking) => {
-        updatedTimes[booking.key] = calculateTimeRemaining(
-          booking.date,
-          booking.startTime
+        updatedTimes[booking?.key] = calculateTimeRemaining(
+          booking?.date,
+          booking?.startTime
         );
       });
 
@@ -63,9 +63,9 @@ const UpcomingBooking = () => {
       const updatedTimes: Record<string, string> = {};
 
       bookings.forEach((booking) => {
-        updatedTimes[booking.key] = calculateTimeRemaining(
-          booking.date,
-          booking.startTime
+        updatedTimes[booking?.key] = calculateTimeRemaining(
+          booking?.date,
+          booking?.startTime
         );
       });
 

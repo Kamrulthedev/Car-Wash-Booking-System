@@ -23,15 +23,15 @@ const AllBookings = () => {
     } else if (isError) {
       setError("Failed to fetch bookings");
       setLoading(false);
-    } else if (data && data.data) {
-      const transformedBookings: Booking[] = data.data.map((booking: any) => ({
-        id: booking._id,
-        userName: booking.customer.name, 
-        service: booking.service.name, 
-        date: booking.slot.date, 
-        timeSlot: `${booking.slot.startTime} - ${booking.slot.endTime}`
+    } else if (data && data?.data) {
+      const AllBOokindatas: Booking[] = data?.data?.map((booking: any) => ({
+        id: booking?._id,
+        userName: booking?.customer?.name, 
+        service: booking?.service?.name, 
+        date: booking?.slot?.date, 
+        timeSlot: `${booking?.slot?.startTime} - ${booking?.slot?.endTime}`
       }));
-      setBookings(transformedBookings);
+      setBookings(AllBOokindatas);
       setLoading(false);
     }
   }, [data, isLoading, isError]);

@@ -43,7 +43,7 @@ const Dashboard = () => {
           }}
         >
           <Menu.Item key="1" icon={<GrUnorderedList />}>
-            <Link to="/admin/bookings">Recent Bookings</Link>
+            <Link to="/admin/all-bookings">Recent Bookings</Link>
           </Menu.Item>
           <Menu.Item key="2" icon={<MdCreateNewFolder />}>
             <Link to="/admin/servicesManagement">Service Management</Link>

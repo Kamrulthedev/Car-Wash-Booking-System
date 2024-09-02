@@ -13,7 +13,7 @@ const UserManagement: React.FC = () => {
 
   React.useEffect(() => {
     if (data) {
-      setUsers(data.data || []);
+      setUsers(data?.data || []);
     }
   }, [data]);
   
@@ -29,7 +29,7 @@ const UserManagement: React.FC = () => {
   };
 
   const toggleUserRole = async (userId: string) => {
-    const user = users.find((u) => u._id === userId); // Match by _id
+    const user = users?.find((u) => u?._id === userId); 
     if (!user) return;
     const newRole = user.role === "user" ? "admin" : "user";
     try {
