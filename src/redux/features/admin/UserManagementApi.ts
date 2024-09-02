@@ -1,33 +1,27 @@
+import { TResponceRedux } from "../../../types/global";
+import { TUser } from "../../../types/User";
 import { baseApi } from "../../api/BaseApi";
 
-
-const SlotApi = baseApi.injectEndpoints({
+const UserManagementApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
-    getSlots: builder.query({
+    getUsers: builder.query({
       query: () => {
         return {
-          url: "/slots/all",
+          url: "/users",
           method: "GET",
         };
       },
-      transformResponse: (response: TResponceRedux<[]>) => ({
+      transformResponse: (response: TResponceRedux<TUser[]>) => ({
         data: response.data,
         meta: response.meta,
       }),
     }),
-    addSlot: builder.mutation({
-      query: (data) => ({
-        url: `/services/slots`,
-        method: "POST",
-        body: data,
-      }),
-    }),
-    updateSlot: builder.mutation({
-      query: ({ id, ...slotData }) => {
+    updateUSer: builder.mutation({
+      query: ({ id, ...userData }) => {
         return {
-          url: `/slots/${id}`,
+          url: `/user/${id}`,
           method: "PUT",
-          body: slotData,
+          body: userData,
         };
       },
     }),
@@ -35,4 +29,4 @@ const SlotApi = baseApi.injectEndpoints({
   overrideExisting: false,
 });
 
-export const { useAddSlotMutation, useGetSlotsQuery, useUpdateSlotMutation } = SlotApi;
+export const { useGetUsersQuery, useUpdateUSerMutation } = UserManagementApi;
