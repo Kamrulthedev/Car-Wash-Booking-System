@@ -1,42 +1,41 @@
 import { useState, useEffect } from "react";
 import { Table } from "antd";
+import { useGetMyBookingsQuery } from "../../../redux/features/admin/Bookings";
 
-// Sample data for past bookings
-const demoData : any = [
-  {
-    key: "1",
-    serviceName: "Car Wash",
-    date: "2024-06-15",
-    time: "09:00 - 10:00",
-    price: "$50",
-    status: "Completed",
-  },
-  {
-    key: "2",
-    serviceName: "Oil Change",
-    date: "2024-06-12",
-    time: "11:00 - 12:00",
-    price: "$75",
-    status: "Completed",
-  },
-  {
-    key: "3",
-    serviceName: "Tire Rotation",
-    date: "2024-06-10",
-    time: "10:00 - 11:00",
-    price: "$30",
-    status: "Cancelled",
-  },
-];
+type Booking = {
+  _id: string;
+  service: {
+    name: string;
+  };
+  date: string;
+  time: string;
+  price: string;
+  status: string;
+};
 
 const PastBooking = () => {
-  const [bookings, setBookings] = useState([]);
+  const [bookings, setBookings] = useState<Booking[]>([]);
+  const { data } = useGetMyBookingsQuery(undefined);
+
+  const formatDate = (isoDate: string) => {
+    const date = new Date(isoDate);
+    return `${date.toLocaleDateString()}`;
+  };
 
   useEffect(() => {
-    // Fetch past bookings data from the backend or use demo data
-    // For now, using demo data
-    setBookings(demoData);
-  }, []);
+    if (data && data.data) {
+      const bookingData: any = data.data.map((booking: any) => ({
+        key: booking._id,
+        serviceName: booking.service.name,
+        date: formatDate(booking.createdAt),
+        time: `${booking.slot.startTime} - ${booking.slot.endTime}`,
+        price: booking.service.price,
+        status: booking.status,
+      }));
+
+      setBookings(bookingData);
+    }
+  }, [data]);
 
   const columns = [
     {

@@ -1,3 +1,4 @@
+import { TBooking } from "../../../types/Bookings";
 import { TResponceRedux } from "../../../types/global";
 import { baseApi } from "../../api/BaseApi";
 
@@ -10,7 +11,19 @@ const BookingApi = baseApi.injectEndpoints({
           method: "GET",
         };
       },
-      transformResponse: (response: TResponceRedux<[]>) => ({
+      transformResponse: (response: TResponceRedux<TBooking[]>) => ({
+        data: response.data,
+        meta: response.meta,
+      }),
+    }),
+    getMyBookings: builder.query({
+      query: () => {
+        return {
+          url: "/my-bookings",
+          method: "GET",
+        };
+      },
+      transformResponse: (response: TResponceRedux<TBooking[]>) => ({
         data: response.data,
         meta: response.meta,
       }),
@@ -19,4 +32,4 @@ const BookingApi = baseApi.injectEndpoints({
   overrideExisting: false,
 });
 
-export const { useGetAllBookingsQuery } = BookingApi;
+export const { useGetAllBookingsQuery, useGetMyBookingsQuery } = BookingApi;
