@@ -1,8 +1,7 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from "../../store";
 
-// Define the user type
-export type TUser = {
+type data = {
   _id: string;
   name: string;
   email: string;
@@ -13,6 +12,10 @@ export type TUser = {
   createdAt: string;
   updatedAt: string;
   __v: number;
+};
+// Define the user type
+export type TUser = {
+  data: data;
 } | null;
 
 // Define the authentication state type
@@ -43,11 +46,17 @@ const authSlice = createSlice({
       state.user = null;
       state.token = null;
     },
+    //update
+    updateUser: (state, action: PayloadAction<{ data: TUser }>) => {
+      if (state.user && action?.payload?.data?.data) {
+        state.user = { ...state.user, ...action.payload.data.data };
+      }
+    },
   },
 });
 
 // Export actions
-export const { setUser, logout } = authSlice.actions;
+export const { setUser, logout, updateUser } = authSlice.actions;
 export default authSlice.reducer;
 
 // Selectors to access authentication state

@@ -1,40 +1,76 @@
-
-import { useState } from "react";
-import { Button, Input, Form, Avatar } from "antd";
+import { useEffect, useState } from "react";
+import { Button, Input, Form, Avatar, message } from "antd";
 import { EditOutlined, UserOutlined } from "@ant-design/icons";
+import { RootState } from "../../../redux/store";
+import { useAppDispatch, useAppSelector } from "../../../redux/hooks";
+import { useUpdateUSerMutation } from "../../../redux/features/admin/UserManagementApi";
+import { updateUser } from "../../../redux/features/auth/AuthSlice";
+
+
+type user = {
+  _id: string;
+  name: string;
+  email: string;
+  password: string;
+  phone: string;
+  role: string;
+  address: string;
+  createdAt: string;
+  updatedAt: string;
+  __v: number;
+};
 
 const AccountInfo = () => {
   const [isEditing, setIsEditing] = useState(false);
   const [form] = Form.useForm();
-  
-  // Sample user data
-  const userData = {
-    name: "John Doe",
-    email: "john.doe@example.com",
-    phone: "+1234567890",
-    address: "123 Main St, Springfield",
-  };
+  const dispatch = useAppDispatch();
+
+  const user :user = useAppSelector((state: RootState) => state.auth.user);
+
+  const [updateUserMutation, { isLoading }] = useUpdateUSerMutation();
+
+  useEffect(() => {
+    if (user) {
+      form.setFieldsValue({
+        name: user.name,
+        email: user.email,
+        phone: user.phone,
+        address: user.address,
+      });
+    }
+  }, [user, form]);
 
   const handleEditClick = () => {
     setIsEditing(true);
   };
 
-  const handleFormSubmit = (values : any) => {
-    console.log("Updated values:", values);
-    setIsEditing(false);
+  const handleFormSubmit = async (values: any) => {
+    try {
+      const updatedUser = await updateUserMutation({ id: user?._id, ...values }).unwrap(); 
+       dispatch(updateUser({ data: updatedUser }));
+      message.success("Profile updated successfully!");
+      setIsEditing(false);
+    } catch (error) {
+      message.error("Failed to update profile. Please try again.");
+    }
   };
+  
 
   const handleCancel = () => {
     setIsEditing(false);
     form.resetFields();
   };
 
+  if (!user) {
+    return <p>Loading user data...</p>; 
+  }
+
   return (
     <div className="p-6 max-w-2xl mx-auto bg-white rounded-md shadow-md">
       <div className="flex items-center mb-6">
         <Avatar size={64} icon={<UserOutlined />} />
         <div className="ml-4">
-          <h1 className="text-2xl font-bold">{userData.name}</h1>
+          <h1 className="text-2xl font-bold">{user.name}</h1>
           <Button
             type="primary"
             icon={<EditOutlined />}
@@ -50,7 +86,7 @@ const AccountInfo = () => {
         <Form
           form={form}
           layout="vertical"
-          initialValues={userData}
+          initialValues={user}
           onFinish={handleFormSubmit}
           className="space-y-4"
         >
@@ -76,7 +112,9 @@ const AccountInfo = () => {
           <Form.Item
             name="phone"
             label="Phone"
-            rules={[{ required: true, message: "Please enter your phone number" }]}
+            rules={[
+              { required: true, message: "Please enter your phone number" },
+            ]}
           >
             <Input placeholder="Enter your phone number" />
           </Form.Item>
@@ -89,7 +127,7 @@ const AccountInfo = () => {
             <Button type="default" onClick={handleCancel}>
               Cancel
             </Button>
-            <Button type="primary" htmlType="submit">
+            <Button type="primary" htmlType="submit" loading={isLoading}>
               Save Changes
             </Button>
           </div>
@@ -98,15 +136,15 @@ const AccountInfo = () => {
         <div className="space-y-4">
           <div>
             <h2 className="text-lg font-semibold">Email</h2>
-            <p>{userData.email}</p>
+            <p>{user.email}</p>
           </div>
           <div>
             <h2 className="text-lg font-semibold">Phone</h2>
-            <p>{userData.phone}</p>
+            <p>{user.phone}</p>
           </div>
           <div>
             <h2 className="text-lg font-semibold">Address</h2>
-            <p>{userData.address}</p>
+            <p>{user.address}</p>
           </div>
         </div>
       )}
