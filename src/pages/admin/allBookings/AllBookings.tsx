@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { Table, Spin, Alert } from "antd";
+import { useGetAllBookingsQuery } from "../../../redux/features/admin/Bookings";
 
 // Define a type for booking data
 type Booking = {
@@ -8,62 +9,32 @@ type Booking = {
   service: string;
   date: string;
   timeSlot: string;
-  status: string;
 };
-
-// Demo data
-const demoBookings: Booking[] = [
-  {
-    id: "1",
-    userName: "John Doe",
-    service: "Full Car Wash",
-    date: "2024-08-15",
-    timeSlot: "10:00 AM - 11:00 AM",
-    status: "Confirmed",
-  },
-  {
-    id: "2",
-    userName: "Jane Smith",
-    service: "Interior Cleaning",
-    date: "2024-08-16",
-    timeSlot: "11:00 AM - 12:00 PM",
-    status: "Pending",
-  },
-  {
-    id: "3",
-    userName: "Alice Johnson",
-    service: "Exterior Wash",
-    date: "2024-08-17",
-    timeSlot: "12:00 PM - 01:00 PM",
-    status: "Cancelled",
-  },
-  {
-    id: "4",
-    userName: "Bob Brown",
-    service: "Complete Detail",
-    date: "2024-08-18",
-    timeSlot: "01:00 PM - 02:00 PM",
-    status: "Confirmed",
-  },
-];
 
 const AllBookings = () => {
   const [bookings, setBookings] = useState<Booking[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
+  const { data, isLoading, isError } = useGetAllBookingsQuery(undefined);
 
   useEffect(() => {
-    setTimeout(() => {
-      try {
-        // Here we're using the demo data
-        setBookings(demoBookings);
-      } catch (error) {
-        setError("Failed to fetch bookings");
-      } finally {
-        setLoading(false);
-      }
-    }, 1000);
-  }, []);
+    if (isLoading) {
+      setLoading(true);
+    } else if (isError) {
+      setError("Failed to fetch bookings");
+      setLoading(false);
+    } else if (data && data.data) {
+      const transformedBookings: Booking[] = data.data.map((booking: any) => ({
+        id: booking._id,
+        userName: booking.customer.name, 
+        service: booking.service.name, 
+        date: booking.slot.date, 
+        timeSlot: `${booking.slot.startTime} - ${booking.slot.endTime}`
+      }));
+      setBookings(transformedBookings);
+      setLoading(false);
+    }
+  }, [data, isLoading, isError]);
 
   const columns = [
     {
@@ -91,17 +62,12 @@ const AllBookings = () => {
       dataIndex: "timeSlot",
       key: "timeSlot",
     },
-    {
-      title: "Status",
-      dataIndex: "status",
-      key: "status",
-    },
   ];
 
   if (loading) return <Spin size="large" className="flex justify-center" />;
   if (error) return <Alert message={error} type="error" />;
 
-  return <Table columns={columns} dataSource={bookings} />;
+  return <Table loading={isLoading} columns={columns} dataSource={bookings} rowKey="id" />;
 };
 
 export default AllBookings;
