@@ -1,9 +1,10 @@
 import { useState, useEffect } from "react";
 import { Card, List } from "antd";
 import dayjs from "dayjs";
-import duration from "dayjs/plugin/duration"; // Import duration plugin for dayjs
+import duration from "dayjs/plugin/duration";
+import { useGetMyPendingBookingsQuery } from "../../../redux/features/admin/Bookings";
 
-dayjs.extend(duration); // Extend dayjs with the duration plugin
+dayjs.extend(duration);
 
 // Define the type for booking data
 type Booking = {
@@ -15,50 +16,54 @@ type Booking = {
   price: string;
 };
 
-// Sample data for upcoming bookings
-const demoData: Booking[] = [
-  {
-    key: "1",
-    serviceName: "Car Wash",
-    date: "2024-09-05",
-    startTime: "10:00",
-    endTime: "11:00",
-    price: "$50",
-  },
-  {
-    key: "2",
-    serviceName: "Oil Change",
-    date: "2024-09-10",
-    startTime: "11:30",
-    endTime: "12:30",
-    price: "$75",
-  },
-];
-
-// Function to calculate time remaining
 const calculateTimeRemaining = (date: string, time: string): string => {
   const now = dayjs();
   const targetTime = dayjs(`${date} ${time}`);
   const diff = targetTime.diff(now);
 
-  // Use duration to format the difference
   const durationObj = dayjs.duration(diff);
-
   return `${durationObj.days()}d ${durationObj.hours()}h ${durationObj.minutes()}m ${durationObj.seconds()}s`;
 };
 
 const UpcomingBooking = () => {
-  const [bookings, setBookings] = useState<Booking[]>([]); // Use type annotation for bookings
-  const [timeRemaining, setTimeRemaining] = useState<Record<string, string>>({}); // Record type for timeRemaining
+  const [bookings, setBookings] = useState<Booking[]>([]);
+  const [timeRemaining, setTimeRemaining] = useState<Record<string, string>>({});
+
+  const { data, isLoading } = useGetMyPendingBookingsQuery(undefined);
 
   useEffect(() => {
-    setBookings(demoData); // Set the bookings with demo data
+    if (data && data.data) {
+      console.log(data.data)
+      const transformedData = data.data.map((booking: any) => ({
+        key: booking._id,
+        serviceName: booking.service.name,
+        date: booking.slot.date, 
+        startTime: booking.slot.startTime, 
+        endTime: booking.slot.endTime,
+        price: `$${booking.service.price}`, 
+      }));
 
+      setBookings(transformedData);
+
+      // Initialize time remaining calculation for each booking
+      const updatedTimes: Record<string, string> = {};
+      transformedData.forEach((booking) => {
+        updatedTimes[booking.key] = calculateTimeRemaining(
+          booking.date,
+          booking.startTime
+        );
+      });
+
+      setTimeRemaining(updatedTimes);
+    }
+  }, [data]);
+
+  useEffect(() => {
     // Update countdown timers every second
     const intervalId = setInterval(() => {
-      const updatedTimes: Record<string, string> = {}; // Initialize as Record
+      const updatedTimes: Record<string, string> = {};
 
-      demoData.forEach((booking) => {
+      bookings.forEach((booking) => {
         updatedTimes[booking.key] = calculateTimeRemaining(
           booking.date,
           booking.startTime
@@ -69,7 +74,7 @@ const UpcomingBooking = () => {
     }, 1000);
 
     return () => clearInterval(intervalId); // Clean up interval on unmount
-  }, []);
+  }, [bookings]);
 
   return (
     <div className="p-4">
@@ -77,6 +82,7 @@ const UpcomingBooking = () => {
       <List
         grid={{ gutter: 16, column: 2 }}
         dataSource={bookings}
+        loading={isLoading}
         renderItem={(item) => (
           <List.Item>
             <Card title={item.serviceName} className="rounded-lg shadow-md">

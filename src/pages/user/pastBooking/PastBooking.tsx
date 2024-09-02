@@ -15,7 +15,7 @@ type Booking = {
 
 const PastBooking = () => {
   const [bookings, setBookings] = useState<Booking[]>([]);
-  const { data } = useGetMyBookingsQuery(undefined);
+  const { data , isLoading} = useGetMyBookingsQuery(undefined);
 
   const formatDate = (isoDate: string) => {
     const date = new Date(isoDate);
@@ -71,6 +71,7 @@ const PastBooking = () => {
       <Table
         dataSource={bookings}
         columns={columns}
+        loading={isLoading}
         pagination={{ pageSize: 5 }}
         bordered
       />

@@ -28,8 +28,20 @@ const BookingApi = baseApi.injectEndpoints({
         meta: response.meta,
       }),
     }),
+    getMyPendingBookings: builder.query({
+      query: () => {
+        return {
+          url: "/my-pending-bookings",
+          method: "GET",
+        };
+      },
+      transformResponse: (response: TResponceRedux<TBooking[]>) => ({
+        data: response.data,
+        meta: response.meta,
+      }),
+    }),
   }),
   overrideExisting: false,
 });
 
-export const { useGetAllBookingsQuery, useGetMyBookingsQuery } = BookingApi;
+export const { useGetAllBookingsQuery, useGetMyBookingsQuery , useGetMyPendingBookingsQuery} = BookingApi;
