@@ -12,12 +12,19 @@ const AdminApi = baseApi.injectEndpoints({
           method: "GET",
         };
       },
-      transformResponse: (response : TResponceRedux<TService[]>) => ({
+      transformResponse: (response: TResponceRedux<TService[]>) => ({
         data: response.data,
         meta: response.meta,
       }),
     }),
-
+    getServiceById: builder.query({
+      query: (id) => {
+        return {
+          url: `/services/${id}`,
+          method: "GET",
+        };
+      },
+    }),
     addService: builder.mutation({
       query: (data) => ({
         url: "/services",
@@ -34,7 +41,7 @@ const AdminApi = baseApi.injectEndpoints({
     updateService: builder.mutation({
       query: ({ id, ...service }) => ({
         url: `/services/${id}`,
-        method: 'PUT',
+        method: "PUT",
         body: service,
       }),
     }),
@@ -47,4 +54,5 @@ export const {
   useAddServiceMutation,
   useDeleteServiceMutation,
   useUpdateServiceMutation,
+  useGetServiceByIdQuery
 } = AdminApi;

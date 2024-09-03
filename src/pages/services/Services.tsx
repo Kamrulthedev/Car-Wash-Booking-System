@@ -1,50 +1,55 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { useGetServicesQuery } from "../../redux/features/admin/AdminApi";
 
 const Services = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [filterCriteria, setFilterCriteria] = useState("all");
   const [sortOrder, setSortOrder] = useState("asc");
+  const { data } = useGetServicesQuery(undefined);
 
-  // Example list of services
-  const servicesList = [
-    { id: 1, name: "Exterior Wash", description: "Complete exterior wash.", price: "15", duration: "30" },
-    { id: 2, name: "Interior Cleaning", description: "Thorough interior cleaning.", price: "25", duration: "45" },
-    { id: 3, name: "Full Service", description: "Exterior wash and interior cleaning.", price: "35", duration: "60" },
-    { id: 4, name: "Waxing", description: "High-quality wax applied for extra shine and protection.", price: "20", duration: "40" },
-    { id: 5, name: "Engine Cleaning", description: "Detailed cleaning of the engine bay.", price: "30", duration: "50" },
-    { id: 6, name: "Tire Shine", description: "Tires cleaned and treated for a glossy finish.", price: "10", duration: "15" },
-    { id: 7, name: "Headlight Restoration", description: "Polishing of headlights for improved clarity and brightness.", price: "25", duration: "35" },
-    { id: 8, name: "Clay Bar Treatment", description: "Removes contaminants and smooths the paint surface.", price: "50", duration: "75" },
-    { id: 9, name: "Seat Shampoo", description: "Deep cleaning of cloth or leather seats.", price: "40", duration: "60" },
-    { id: 10, name: "Undercarriage Wash", description: "Clean the underside of the vehicle to remove dirt and grime.", price: "20", duration: "30" }
-  ];
+
+  // State for storing services fetched from the API
+  const [servicesList, setServicesList] = useState<any[]>([]);
+
+  useEffect(() => {
+    if (data?.data && data?.data?.length > 0) {
+      const transformedServices = data?.data?.map((service: any) => ({
+        id: service?._id,
+        name: service?.name,
+        description: service?.description,
+        price: service?.price,
+        duration: service?.duration,
+      }));
+
+      setServicesList(transformedServices);
+    }
+  }, [data]);
 
   // Filter the services based on search query, filter criteria, and sort order
   const filteredServices = servicesList
-    .filter(service =>
-      service.name.toLowerCase().includes(searchQuery.toLowerCase())
+    .filter((service) =>
+      service?.name?.toLowerCase().includes(searchQuery.toLowerCase())
     )
-    .filter(service => {
+    .filter((service) => {
       switch (filterCriteria) {
         case "lowPrice":
-          return Number(service.price) <= 20; 
+          return Number(service?.price) <= 20;
         case "highPrice":
-          return Number(service.price) > 20; 
+          return Number(service?.price) > 20;
         case "shortDuration":
-          return Number(service.duration) <= 30;
+          return Number(service?.duration) <= 30;
         case "longDuration":
-          return Number(service.duration) > 30;
+          return Number(service?.duration) > 30;
         default:
           return true;
       }
     })
-    // Sort the services
     .sort((a, b) => {
       if (sortOrder === "asc") {
-        return a.name.localeCompare(b.name);
+        return a?.name.localeCompare(b?.name);
       } else {
-        return b.name.localeCompare(a.name);
+        return b?.name.localeCompare(a?.name);
       }
     });
 
@@ -58,7 +63,7 @@ const Services = () => {
     >
       <div className="bg-white p-8 rounded-lg shadow-lg max-w-4xl w-full">
         <h2 className="text-3xl font-serif mb-6 text-center">Our Services</h2>
-        
+
         {/* Search and Filter Controls */}
         <div className="mb-4 flex flex-col lg:flex-row justify-between lg:gap-5 items-center">
           <input
@@ -95,18 +100,18 @@ const Services = () => {
 
         {/* Services List */}
         <div className="space-y-6">
-          {filteredServices.map((service) => (
-            <div key={service.id} className="border-b pb-4 mb-4 lg:flex lg:items-center lg:justify-between">
+          {filteredServices?.map((service) => (
+            <div key={service?.id} className="border-b pb-4 mb-4 lg:flex lg:items-center lg:justify-between">
               <div>
-                <h3 className="text-xl font-serif">{service.name}</h3>
-                <p className="text-gray-700">{service.description}</p>
+                <h3 className="text-xl font-serif">{service?.name}</h3>
+                <p className="text-gray-700">{service?.description}</p>
                 <p className="text-gray-500">
-                  <strong>Price:</strong> ${service.price} &nbsp;|&nbsp;
-                  <strong>Duration:</strong> {service.duration} mins
+                  <strong>Price:</strong> ${service?.price} &nbsp;|&nbsp;
+                  <strong>Duration:</strong> {service?.duration} mins
                 </p>
               </div>
               <button className="mt-2 lg:mt-0 border-2 border-green-500 p-2 rounded-lg hover:bg-green-500 hover:text-white transition duration-300">
-                <Link to={`/services/${service.id}`}>View Details</Link>
+                <Link to={`/services/${service?.id}`}>View Details</Link>
               </button>
             </div>
           ))}

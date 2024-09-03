@@ -40,8 +40,22 @@ const BookingApi = baseApi.injectEndpoints({
         meta: response.meta,
       }),
     }),
+    addBooking: builder.mutation({
+      query: (bookingData) => {
+        return {
+          url: "/create/bookings",
+          method: "POST",
+          body: bookingData, 
+        };
+      },
+    }),
   }),
   overrideExisting: false,
 });
 
-export const { useGetAllBookingsQuery, useGetMyBookingsQuery , useGetMyPendingBookingsQuery} = BookingApi;
+export const {
+  useGetAllBookingsQuery,
+  useGetMyBookingsQuery,
+  useGetMyPendingBookingsQuery,
+  useAddBookingMutation,
+} = BookingApi;
