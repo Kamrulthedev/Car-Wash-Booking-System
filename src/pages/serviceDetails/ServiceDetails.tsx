@@ -8,14 +8,27 @@ import { useAddBookingMutation } from "../../redux/features/admin/Bookings";
 import { useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
 
+enum VehicleType {
+  Car = "car",
+  Truck = "truck",
+  SUV = "suv",
+  Van = "van",
+  Motorcycle = "motorcycle",
+  Bus = "bus",
+  ElectricVehicle = "electricVehicle",
+  HybridVehicle = "hybridVehicle",
+  Bicycle = "bicycle",
+  Tractor = "tractor",
+}
 
 const ServiceDetails = () => {
   const { id } = useParams<{ id: string }>();
   const [selectedService, setSelectedService] = useState<TService>(undefined);
   const [loading, setLoading] = useState(true);
   const [selectedDate, setSelectedDate] = useState("");
-  const [selectedSlotId, setSelectedSlotId] = useState<string | null>(null); // Store slot ID
+  const [selectedSlotId, setSelectedSlotId] = useState<string | null>(null);
   const [bookedSlots, setBookedSlots] = useState<string[]>([]);
+  const [vehicleType, setVehicleType] = useState<VehicleType>(VehicleType.Car);
   const navigate = useNavigate();
 
   // Fetch the current user's authentication status
@@ -25,7 +38,8 @@ const ServiceDetails = () => {
   const { data, isLoading } = useGetServiceByIdQuery(id);
 
   // Fetch available slots by service ID
-  const { data: slotData, isLoading: slotLoading } = useGetSlotsByServiceIdQuery(id);
+  const { data: slotData, isLoading: slotLoading } =
+    useGetSlotsByServiceIdQuery(id);
 
   // Use the addBooking mutation hook
   const [addBooking] = useAddBookingMutation();
@@ -51,7 +65,10 @@ const ServiceDetails = () => {
       const fetchBookedSlots = async () => {
         if (slotData && slotData.data) {
           const fetchedBookedSlots = slotData.data
-            .filter((slot) => slot.date === selectedDate && slot.isBooked !== "available")
+            .filter(
+              (slot) =>
+                slot.date === selectedDate && slot.isBooked !== "available"
+            )
             .map((slot) => slot._id);
           setBookedSlots(fetchedBookedSlots);
         }
@@ -61,7 +78,7 @@ const ServiceDetails = () => {
   }, [selectedDate, slotData]);
 
   const handleSlotSelection = (slotId: string) => {
-    setSelectedSlotId(slotId); 
+    setSelectedSlotId(slotId);
   };
 
   const handleBooking = async () => {
@@ -74,13 +91,13 @@ const ServiceDetails = () => {
       const bookingData = {
         serviceId: id,
         slotId: selectedSlotId,
-        vehicleType: "car", 
-        vehicleBrand: "Toyota", 
-        vehicleModel: "Camry", 
-        manufacturingYear: 2025, 
-        registrationPlate: "ABC123", 
+        vehicleType: vehicleType,
+        vehicleBrand: "Toyota",
+        vehicleModel: "Camry",
+        manufacturingYear: 2025,
+        registrationPlate: "ABC123",
       };
-console.log(bookingData)
+      console.log(bookingData);
       try {
         await addBooking(bookingData).unwrap();
         Swal.fire({
@@ -93,7 +110,7 @@ console.log(bookingData)
           setSelectedSlotId(null);
         });
       } catch (error) {
-        console.log(error)
+        console.log(error);
         Swal.fire({
           title: "Booking Failed",
           text: "An error occurred while booking the service. Please try again.",
@@ -112,16 +129,22 @@ console.log(bookingData)
   };
 
   const availableSlots = slotData?.data
-    ? slotData.data.filter((slot) => slot?.isBooked === "available").map((slot) => ({
-        id: slot._id,
-        startTime: slot.startTime,
-      }))
+    ? slotData.data
+        .filter((slot) => slot?.isBooked === "available")
+        .map((slot) => ({
+          id: slot._id,
+          startTime: slot.startTime,
+        }))
     : [];
 
-
-  if (loading || slotLoading) return <p>Loading service details...</p>;
+  if (loading || slotLoading)
+    return <p className="mt-[72px]">Loading service details...</p>;
   if (!selectedService) {
-    return <p>Service not found. Please check the service ID.</p>;
+    return (
+      <p className="mt[62px]">
+        Service not found. Please check the service ID.
+      </p>
+    );
   }
 
   return (
@@ -148,25 +171,53 @@ console.log(bookingData)
           />
         </div>
 
+        {/* Vehicle Type Selector */}
+        <div className="mb-6">
+          <label className="block text-gray-700 mb-2">
+            Select Vehicle Type:
+          </label>
+          <select
+            value={vehicleType}
+            onChange={(e) => setVehicleType(e.target.value as VehicleType)}
+            className="border p-2 rounded w-full"
+          >
+            {Object.values(VehicleType).map((type) => (
+              <option key={type} value={type}>
+                {type.charAt(0).toUpperCase() +
+                  type
+                    .slice(1)
+                    .replace(/([A-Z])/g, " $1")
+                    .trim()}
+              </option>
+            ))}
+          </select>
+        </div>
+
         {/* Time Slots */}
         <div className="mb-6">
           <h3 className="text-xl font-semibold mb-2">Available Time Slots</h3>
-          <div className="grid grid-cols-2 gap-4">
-            {availableSlots.map((slot) => (
-              <button
-                key={slot.id}
-                onClick={() => handleSlotSelection(slot.id)}
-                disabled={bookedSlots.includes(slot.id)}
-                className={`p-2 rounded border text-center ${
-                  bookedSlots.includes(slot.id)
-                    ? "bg-gray-200 text-gray-500 cursor-not-allowed"
-                    : "bg-green-500 text-white hover:bg-green-600"
-                } ${selectedSlotId === slot.id && "border-green-700 border-2"}`}
-              >
-                {slot.startTime}
-              </button>
-            ))}
-          </div>
+          {availableSlots.length > 0 ? (
+            <div className="grid grid-cols-2 gap-4">
+              {availableSlots.map((slot) => (
+                <button
+                  key={slot.id}
+                  onClick={() => handleSlotSelection(slot.id)}
+                  disabled={bookedSlots.includes(slot.id)}
+                  className={`p-2 rounded border text-center ${
+                    bookedSlots.includes(slot.id)
+                      ? "bg-gray-200 text-gray-500 cursor-not-allowed"
+                      : "bg-green-500 text-white hover:bg-green-600"
+                  } ${
+                    selectedSlotId === slot.id && "border-green-700 border-2"
+                  }`}
+                >
+                  {slot.startTime}
+                </button>
+              ))}
+            </div>
+          ) : (
+            <p className="text-gray-500 text-center">No available Slots Time</p>
+          )}
         </div>
 
         {/* Book Button */}

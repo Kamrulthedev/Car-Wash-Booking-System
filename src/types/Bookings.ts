@@ -14,3 +14,14 @@ import { TSlot } from "./Slot";
     updatedAt: string;
     __v: number;
   }
+
+  export type TNewBooking = {
+    _id: string;
+    service: {
+      name: string;
+      price: number; // Adjust type if necessary
+      duration: number; // Adjust type if necessary
+    };
+    description: string;
+    availableSlots: string[];
+  };
