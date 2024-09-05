@@ -4,7 +4,9 @@ import Swal from "sweetalert2";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { useGetMyPendingBookingsQuery } from "../../redux/features/admin/Bookings";
 import { TBooking } from "../../types/Bookings";
-
+import { useSelector } from "react-redux";
+import { RootState } from "../../redux/store";
+import { useInitalePaymentMutation } from "../../redux/features/payment/PaymentAPi";
 
 const Booking = () => {
   const [selectedService, setSelectedService] = useState<TBooking | null>(null);
@@ -13,9 +15,15 @@ const Booking = () => {
   const [userEmail, setUserEmail] = useState("");
   const [data, setData] = useState<TBooking[]>([]);
 
-
   // Fetch pending bookings data from the backend
-  const { data: MyBookingData, isLoading } = useGetMyPendingBookingsQuery(undefined);
+  const { data: MyBookingData, isLoading } =
+    useGetMyPendingBookingsQuery(undefined);
+
+  //user data
+  const isAuthenticated = useSelector((state: RootState) => state.auth.user);
+
+  //initale Payment
+  const [initalePayment] = useInitalePaymentMutation();
 
   // Process the fetched data once it's loaded
   useEffect(() => {
@@ -39,7 +47,7 @@ const Booking = () => {
     }, 1000);
   };
 
-  const handlePayment = () => {
+  const handlePayment = async () => {
     if (!userName || !userEmail || !selectedDate) {
       Swal.fire({
         title: "Incomplete Information",
@@ -47,31 +55,42 @@ const Booking = () => {
         icon: "warning",
         confirmButtonText: "OK",
       });
-      return;
     }
-
-    // Payment processing logic with AAMARPAY
-    const paymentUrl = `https://aamarpay.com/pay?amount=${selectedService?.service?.price}&customer_name=${userName}&customer_email=${userEmail}&service_id=${selectedService?._id}`;
-    window.location.href = paymentUrl;
-
-    // Redirect to success page after payment
-    window.location.replace("/success");
+    const totalePrice = selectedService?.service?.price;
+    const BookingId = selectedService?._id;
+    const OrderData = {
+      BookingId,
+      userName,
+      userEmail,
+      selectedDate,
+      totalePrice,
+      phone: isAuthenticated?.phone,
+      address: isAuthenticated?.address,
+    };
+    console.log(OrderData);
+    try {
+      const res = await initalePayment(OrderData);
+      window.location.href = res.data.payment_url;
+      console.log(res);
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   if (isLoading) {
-    return <p>Loading bookings...</p>;
+    return <p className="mt-62px">Loading bookings...</p>;
   }
 
   return (
     <div className="relative mt-[62px] p-4 min-h-screen grid grid-cols-1 md:grid-cols-2 gap-4">
       {/* Left Side: Selected Service and Slot Information */}
-      <div className="h-full flex flex-col">
+      <div className="h-full flex flex-col ">
         <h1 className="text-lg lg:text-2xl font-serif p-4 text-center">
           Book Services
         </h1>
         <div
           id="scrollableDiv"
-          className="flex-1 overflow-auto p-4 border border-gray-300"
+          className="flex-1 overflow-auto p-4 border border-gray-300 hover:bg-slate-100"
           style={{
             maxHeight: "400px",
           }}
@@ -90,16 +109,23 @@ const Booking = () => {
           >
             <List
               dataSource={data}
-              renderItem={(item:any) => (
+              loading={isLoading}
+              renderItem={(item: any) => (
                 <List.Item
-                  key={item._id}
+                  key={item?._id}
                   onClick={() => setSelectedService(item)}
                 >
-                  <div className="flex flex-col font-serif">
-                    <span>{item.service.name}</span>
-                    <span>{item.description}</span>
-                    <span>Price: ${item.service.price}</span>
-                    <span>Duration: {item.service.duration} mins</span>
+                  <div className="flex flex-col font-serif ">
+                    <span>{item?.service?.name}</span>
+                    <span>{item?.description}</span>
+                    <span>Price: ${item?.service?.price}</span>
+                    <span>Duration: {item?.service?.duration} mins</span>
+                  </div>
+                  <div className="font-serif">
+                    <span>
+                      Slot Time:{" "}
+                      {`${item?.slot?.startTime}-${item?.slot?.endTime}`}
+                    </span>
                   </div>
                 </List.Item>
               )}

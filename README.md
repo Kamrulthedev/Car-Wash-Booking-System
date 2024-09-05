@@ -1,8 +1,11 @@
 # 🚗 Car Wash Booking System
+
 ## Introduction
+
 The Car Wash Booking System is a user-friendly web application designed to simplify the car wash booking process. With an intuitive interface, users can easily book car wash services, manage their bookings, and access detailed service information. The system also provides an admin dashboard for managing services, slots, and users.
 
 ## Project Description
+
 This project aims to provide a seamless booking experience for car wash services. It includes functionalities for user authentication, service management, booking slots, and more. The system is designed to be responsive and accessible across various devices, ensuring a smooth experience for both users and administrators.
 
 ## Features
@@ -54,7 +57,7 @@ Service Slot Countdown: Countdown timer for upcoming bookings.
 
 1. Service Comparison: Compare multiple services side by side.
 2. Scroll to Top Button: Quick return to the top of the page.
-4. UI/UX Improvements: Enhanced user interface and experience.
+3. UI/UX Improvements: Enhanced user interface and experience.
 
 ## Technology Stack
 
@@ -89,7 +92,7 @@ npm install
    1. Create a .env file in the root directory.
 
    2. Add necessary configuration variables:
-  
+
 ```bash
   PORT=3000
 DB_URL=your_db_connection_uri
@@ -98,23 +101,33 @@ API_KEY=your_api_key_here
 
 4. 🚀 Start the Development Server:
 
-```bash   
-  npm start
+```bash
+  npm run start:dev
 ```
+
 ## Usage
+
 1. 🏠 Home Page: Navigate through the site, explore services, and access the booking system.
 2. 🔐 User Authentication: Register and log in to access personalized features.
 3. 👨‍💼 Admin Dashboard: Manage services, slots, and users.
 4. 📅 Booking: Select services and time slots, complete the booking and payment process.
+ 
+## 🌐 Live Link
+
+. Check out the live demo of the project here: [Live Link](https://car-wash-booking-system-murex.vercel.app/)
 
 ## GitHub Contributions
+
 1. Ensure a well-documented GitHub repository with a minimum of 15 commits.
 2. Each commit should represent meaningful progress, such as feature implementation, bug fixes, or UI enhancements.
- 
- ## Deliverables
+
+## Deliverables
+
 1. Fully functional frontend application integrated with the backend.
 2. Responsive design for all pages.
 3. User and Admin dashboards with described features.
 4. Complete backend integration.
 5. Clean, well-organized, and documented code.
 6. Creative solutions to integration challenges.
+
+## Made with ❤️ by [KAMRUL](https://github.com/Kamrulthedev)
