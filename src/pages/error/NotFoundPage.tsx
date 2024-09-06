@@ -1,7 +1,12 @@
+import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+import { RootState } from '../../redux/store';
 
 const NotFoundPage = () => {
   const navigate = useNavigate();
+
+  // Get the authentication state from the Redux store
+  const isAuthenticated = useSelector((state: RootState) => state.auth.user);
 
   return (
     <div
@@ -11,21 +16,26 @@ const NotFoundPage = () => {
       }}
     >
       <h1 className="text-5xl font-bold mb-4 text-black">404</h1>
-      <p className="text-xl mb-8 text-black">Oops! The page you are looking for does not exist.</p>
-      
+      <p className="text-xl mb-8 text-black">
+        Oops! The page you are looking for does not exist.
+      </p>
+
       <div className="flex space-x-4">
         <button
-          onClick={() => navigate('/')}
+          onClick={() => navigate("/")}
           className="py-2 px-4 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition duration-300"
         >
           Go to Home
         </button>
-        <button
-          onClick={() => navigate('/login')}
-          className="py-2 px-4 bg-gray-500 text-white rounded-lg hover:bg-gray-600 transition duration-300"
-        >
-          Go to Login
-        </button>
+        {/* Conditionally render the 'Go to Login' button based on authentication state */}
+        {!isAuthenticated && (
+          <button
+            onClick={() => navigate("/login")}
+            className="py-2 px-4 bg-gray-500 text-white rounded-lg hover:bg-gray-600 transition duration-300"
+          >
+            Go to Login
+          </button>
+        )}
       </div>
     </div>
   );

@@ -48,16 +48,20 @@ const Booking = () => {
   };
 
   const handlePayment = async () => {
-    if (!userName || !userEmail || !selectedDate) {
+    // Validate required fields
+    if (!userName || !userEmail || !selectedDate || !selectedService) {
       Swal.fire({
         title: "Incomplete Information",
         text: "Please fill in all the fields before proceeding to payment.",
         icon: "warning",
         confirmButtonText: "OK",
       });
+      return; // Stop execution if any required field is missing
     }
-    const totalePrice = selectedService?.service?.price;
-    const BookingId = selectedService?._id;
+
+    // Prepare order data
+    const totalePrice = selectedService.service?.price;
+    const BookingId = selectedService._id;
     const OrderData = {
       BookingId,
       userName,
@@ -68,12 +72,31 @@ const Booking = () => {
       address: isAuthenticated?.address,
     };
     console.log(OrderData);
+
     try {
+      // Initiate payment
       const res = await initalePayment(OrderData);
-      window.location.href = res.data.payment_url;
-      console.log(res);
+
+      // Check if the response contains the payment URL
+      if (res?.data?.payment_url) {
+        // Redirect to payment URL
+        window.location.href = res.data.payment_url;
+      } else {
+        Swal.fire({
+          title: "Payment Error",
+          text: "Failed to initiate payment. Please try again later.",
+          icon: "error",
+          confirmButtonText: "OK",
+        });
+      }
     } catch (err) {
-      console.log(err);
+      console.error("Error during payment initiation:", err);
+      Swal.fire({
+        title: "Payment Error",
+        text: "An error occurred during payment. Please try again.",
+        icon: "error",
+        confirmButtonText: "OK",
+      });
     }
   };
 
@@ -84,13 +107,13 @@ const Booking = () => {
   return (
     <div className="relative mt-[62px] p-4 min-h-screen grid grid-cols-1 md:grid-cols-2 gap-4">
       {/* Left Side: Selected Service and Slot Information */}
-      <div className="h-full flex flex-col ">
+      <div className="h-full flex flex-col">
         <h1 className="text-lg lg:text-2xl font-serif p-4 text-center">
           Book Services
         </h1>
         <div
           id="scrollableDiv"
-          className="flex-1 overflow-auto p-4 border border-gray-300 hover:bg-slate-100"
+          className="flex-1 overflow-auto border border-gray-300"
           style={{
             maxHeight: "400px",
           }}
@@ -114,14 +137,18 @@ const Booking = () => {
                 <List.Item
                   key={item?._id}
                   onClick={() => setSelectedService(item)}
+                  // Apply conditional styling for the selected item
+                  className={`cursor-pointer ${
+                    selectedService?._id === item?._id ? "bg-blue-100 p-2 rounded-md" : ""
+                  }`}
                 >
-                  <div className="flex flex-col font-serif ">
+                  <div className="flex flex-col font-serif p-2">
                     <span>{item?.service?.name}</span>
                     <span>{item?.description}</span>
                     <span>Price: ${item?.service?.price}</span>
                     <span>Duration: {item?.service?.duration} mins</span>
                   </div>
-                  <div className="font-serif">
+                  <div className="font-serif p-2">
                     <span>
                       Slot Time:{" "}
                       {`${item?.slot?.startTime}-${item?.slot?.endTime}`}
