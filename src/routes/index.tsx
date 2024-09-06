@@ -17,6 +17,7 @@ import PastBooking from "../pages/user/pastBooking/PastBooking";
 import UpcomingBooking from "../pages/user/upcomingBooking/UpcomingBooking";
 import AccountInfo from "../pages/user/accountInfo/AccountInfo";
 import SlotCountdown from "../pages/user/slotCountdown/SlotCountdown";
+import Reviws from "../pages/reviws/Reviws";
 
 const router = createBrowserRouter([
   {
@@ -52,49 +53,53 @@ const router = createBrowserRouter([
         element: <NotFoundPage />,
       },
       {
-        path:'/admin',
-        element:<Admin></Admin>,
-        children:[
-          {
-            path:'all-bookings',
-            element:<AllBookings></AllBookings>
-          },
-          {
-            path:'servicesManagement',
-            element:<ServiceManagement></ServiceManagement>
-          },
-          {
-            path:'slotsManagement',
-            element:<SlotManagement></SlotManagement>
-          },
-          {
-            path:'usersManagement',
-            element:<UserManagement></UserManagement>
-          },
-        ]
+        path: "/reviews",
+        element: <Reviws></Reviws>,
       },
       {
-        path:'/user',
-        element:<User></User>,
-        children:[
+        path: "/admin",
+        element: <Admin></Admin>,
+        children: [
           {
-            path:'past-bookings',
-            element:<PastBooking></PastBooking>
+            path: "all-bookings",
+            element: <AllBookings></AllBookings>,
           },
           {
-            path:'upcoming-bookings',
-            element:<UpcomingBooking></UpcomingBooking>
+            path: "servicesManagement",
+            element: <ServiceManagement></ServiceManagement>,
           },
           {
-            path:'account-info',
-            element:<AccountInfo></AccountInfo>
+            path: "slotsManagement",
+            element: <SlotManagement></SlotManagement>,
           },
           {
-            path:'service-slot-countdown',
-            element:<SlotCountdown></SlotCountdown>
+            path: "usersManagement",
+            element: <UserManagement></UserManagement>,
           },
-        ]
-      }
+        ],
+      },
+      {
+        path: "/user",
+        element: <User></User>,
+        children: [
+          {
+            path: "past-bookings",
+            element: <PastBooking></PastBooking>,
+          },
+          {
+            path: "upcoming-bookings",
+            element: <UpcomingBooking></UpcomingBooking>,
+          },
+          {
+            path: "account-info",
+            element: <AccountInfo></AccountInfo>,
+          },
+          {
+            path: "service-slot-countdown",
+            element: <SlotCountdown></SlotCountdown>,
+          },
+        ],
+      },
     ],
   },
 ]);
