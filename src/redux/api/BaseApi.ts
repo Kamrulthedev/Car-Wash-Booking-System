@@ -46,7 +46,6 @@ const baseQueryWithRefreshToken: BaseQueryFn<
             token: data.data.accessToken,
           })
         );
-
         result = await baseQuery(args, api, extraOptions);
       } else {
         api.dispatch(logout());
