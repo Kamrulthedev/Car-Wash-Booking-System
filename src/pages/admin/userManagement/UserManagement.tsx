@@ -94,7 +94,7 @@ const UserManagement: React.FC = () => {
   return (
     <div style={{ padding: 24, background: "#fff", minHeight: "100vh" }}>
       <Title level={2}>User Management</Title>
-      <Table dataSource={users} columns={columns} rowKey="id" />
+      <Table loading={isLoading} dataSource={users} columns={columns} rowKey="id" />
     </div>
   );
 };

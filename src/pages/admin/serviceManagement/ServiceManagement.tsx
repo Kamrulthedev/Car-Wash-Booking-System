@@ -37,7 +37,7 @@ const ServiceManagement = () => {
   const [currentService, setCurrentService] = useState<Service | null>(null);
   const [form] = Form.useForm();
 
-  const { data, refetch } = useGetServicesQuery(undefined);
+  const { data, refetch, isLoading } = useGetServicesQuery(undefined);
   const [addService] = useAddServiceMutation();
   const [deleteService] = useDeleteServiceMutation();
   const [updateService] = useUpdateServiceMutation();
@@ -169,6 +169,7 @@ const ServiceManagement = () => {
         visible={isModalVisible}
         onOk={handleOk}
         onCancel={handleCancel}
+        loading={isLoading}
       >
         <Form form={form} layout="vertical">
           <Form.Item
