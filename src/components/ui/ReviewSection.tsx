@@ -24,7 +24,6 @@ const ReviewSection = () => {
   const navigate = useNavigate();
 
   const isAuthenticated = useSelector((state: RootState) => state.auth.user);
-  console.log(isAuthenticated);
 
   const [addReviw] = useAddReviwMutation();
 
