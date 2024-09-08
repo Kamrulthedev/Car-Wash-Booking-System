@@ -71,7 +71,6 @@ const Booking = () => {
       phone: isAuthenticated?.phone,
       address: isAuthenticated?.address,
     };
-    console.log(OrderData);
 
     try {
       // Initiate payment
