@@ -18,6 +18,7 @@ import UpcomingBooking from "../pages/user/upcomingBooking/UpcomingBooking";
 import AccountInfo from "../pages/user/accountInfo/AccountInfo";
 import SlotCountdown from "../pages/user/slotCountdown/SlotCountdown";
 import Reviws from "../pages/reviws/Reviws";
+import Location from "../pages/location/Location";
 
 const router = createBrowserRouter([
   {
@@ -47,6 +48,10 @@ const router = createBrowserRouter([
       {
         path: "/register",
         element: <Register></Register>,
+      },
+      {
+        path:"/location",
+        element:<Location></Location>
       },
       {
         path: "*",

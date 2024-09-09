@@ -7,6 +7,7 @@ import { TBooking } from "../../types/Bookings";
 import { useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
 import { useInitalePaymentMutation } from "../../redux/features/payment/PaymentAPi";
+import { useNavigate } from "react-router-dom";
 
 const Booking = () => {
   const [selectedService, setSelectedService] = useState<TBooking | null>(null);
@@ -22,8 +23,19 @@ const Booking = () => {
   //user data
   const isAuthenticated = useSelector((state: RootState) => state.auth.user);
 
+
   //initale Payment
   const [initalePayment] = useInitalePaymentMutation();
+
+    // Navigate function
+    const navigate = useNavigate();
+
+   // Redirect to login if user is not authenticated
+   useEffect(() => {
+    if (!isAuthenticated) {
+      navigate("/login"); // Redirect to login page
+    }
+  }, [isAuthenticated, navigate]);
 
   // Process the fetched data once it's loaded
   useEffect(() => {
