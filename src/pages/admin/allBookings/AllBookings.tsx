@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useEffect, useState } from "react";
 import { Table, Spin, Alert } from "antd";
 import { useGetAllBookingsQuery } from "../../../redux/features/admin/Bookings";

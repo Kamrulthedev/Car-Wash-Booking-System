@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Divider, List, Skeleton } from "antd";
 import { useEffect, useState } from "react";
 import Swal from "sweetalert2";
@@ -68,7 +69,7 @@ const Booking = () => {
         icon: "warning",
         confirmButtonText: "OK",
       });
-      return; // Stop execution if any required field is missing
+      return; 
     }
 
     // Prepare order data
